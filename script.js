@@ -1,6 +1,7 @@
-// Inline JavaScript to ensure it's loaded
-// DOM Elements
 document.addEventListener('DOMContentLoaded', function () {
+    // DOM Elements
+    const welcomePage = document.getElementById('welcome-page');
+    const appOverviewPage = document.getElementById('app-overview-page');
     const loginPage = document.getElementById('login-page');
     const scanPage = document.getElementById('scan-page');
     const connectedPage = document.getElementById('connected-page');
@@ -9,26 +10,103 @@ document.addEventListener('DOMContentLoaded', function () {
     const deviceId = document.getElementById('device-id');
     const skipNfcBtn = document.getElementById('skip-nfc-btn');
     const startScanBtn = document.getElementById('start-scan-btn');
+    const skipInstructionsBtn = document.getElementById('skip-instructions-btn');
+    const mainMenuBtns = document.querySelectorAll('#welcome-page .btn');
+    const backButton = document.querySelector('.back-button');
 
-    // Make sure all pages are hidden except the active one
-    document.querySelectorAll('.page').forEach(page => {
-        if (page.id !== 'login-page') {
-            page.style.display = 'none';
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            showPage('welcome-page');
+        });
+    }
+
+    // Update top toolbar text based on current page
+    function updateTopToolbarText_no() {
+        const backButtonText = document.querySelector('.back-button span');
+        if (!backButtonText) return;
+
+        if (document.getElementById('app-overview-page').classList.contains('active')) {
+            backButtonText.textContent = 'Set up new sensor';
+        } else if (document.getElementById('login-page').classList.contains('active')) {
+            backButtonText.textContent = 'Calibrate existing sensor';
+        } else if (document.getElementById('scan-page').classList.contains('active')) {
+            backButtonText.textContent = 'Scan NFC tag';
+        } else if (document.getElementById('connected-page').classList.contains('active')) {
+            backButtonText.textContent = 'Connected device';
         }
-    });
+    }
+
+    // Call this function when changing pages
+    const originalShowPage = window.showPage || function () { };
+    window.showPage = function (pageId) {
+        originalShowPage(pageId);
+        updateTopToolbarText();
+    };
 
     // Show specified page
-    function showPage(pageId) {
-        // Hide all pages
+    function showPageold(pageId) {
+        // Hide all pages by removing active class
         document.querySelectorAll('.page').forEach(page => {
-            page.style.display = 'none';
+            page.classList.remove('active');
         });
 
-        // Show the specified page
+        // Show the specified page by adding active class
         const pageToShow = document.getElementById(pageId);
         if (pageToShow) {
-            pageToShow.style.display = 'block';
+            pageToShow.classList.add('active');
         }
+    }
+    // Add this near the top of your document.addEventListener('DOMContentLoaded', function () { ... });
+    // This adds a class to the body to indicate when we're at the welcome page
+
+    // Set initial state based on which page is active on load
+    if (document.getElementById('welcome-page').classList.contains('active')) {
+        document.body.classList.add('at-welcome-page');
+    } else {
+        document.body.classList.remove('at-welcome-page');
+    }
+
+    // Update the showPage function to manage the body class
+    function showPage(pageId) {
+        // Hide all pages by removing active class
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show the specified page by adding active class
+        const pageToShow = document.getElementById(pageId);
+        if (pageToShow) {
+            pageToShow.classList.add('active');
+        }
+
+        // Update body class to control toolbar visibility
+        if (pageId === 'welcome-page') {
+            document.body.classList.add('at-welcome-page');
+        } else {
+            document.body.classList.remove('at-welcome-page');
+        }
+    }
+
+    // Set up event listeners for welcome page buttons
+    if (mainMenuBtns) {
+        mainMenuBtns.forEach((btn, index) => {
+            btn.addEventListener('click', function () {
+                if (index === 0) { // "Set up new sensor"
+                    showPage('app-overview-page');
+                } else if (index === 1) { // "Calibrate existing sensor"
+                    showPage('login-page');
+                } else if (index === 2) { // "Instructions"
+                    showPage('app-overview-page');
+                }
+            });
+        });
+    }
+
+    // Skip instructions button
+    if (skipInstructionsBtn) {
+        skipInstructionsBtn.addEventListener('click', function () {
+            showPage('login-page');
+        });
     }
 
     // Handle login form submission
@@ -54,6 +132,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 deviceId.textContent = "NO-NFC-USED";
             }
             showPage('connected-page');
+        });
+    }
+
+    // Done button
+    const doneBtn = document.getElementById('done-btn');
+    if (doneBtn) {
+        doneBtn.addEventListener('click', function () {
+            showPage('welcome-page');
         });
     }
 
@@ -105,4 +191,5 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
 });

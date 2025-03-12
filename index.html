@@ -4,54 +4,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>scanner Page</title>
+    <title>Scanner Page</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
 </head>
 
-<!-- Login Page -->
-<div id="login-page" class="page active">
-    <h1>Login</h1>
-    <form id="login-form">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username">
+<body>
+    <!-- Top Toolbar -->
+    <div class="top-toolbar">
+        <div class="back-button">
+            <i class="ph-light ph-caret-left"></i>
+            <span>Set up new sensor</span>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+    </div>
+    <!-- Welcome Page -->
+    <div id="welcome-page" class="page active">
+        <h1>Welcome</h1>
+
+        <div class="button-group">
+            <button id="mainmenu1" class="btn"><i class="ph-bold ph-clipboard"></i>Set up new sensor</button>
+            <button id="mainmenu2" class="btn"><i class="ph-bold ph-clipboard"></i>Calibrate existing sensor</button>
+            <button id="mainmenu3" class="btn"><i class="ph-bold ph-clipboard-text"></i>Instructions</button>
+
         </div>
-        <button type="submit" class="btn">Log in</button>
-    </form>
-</div>
-
-<!-- Scan NFC Page -->
-<div id="scan-page" class="page">
-    <h1>Ready to scan</h1>
-    <div class="nfc-icon">
-        <div class="nfc-wave"></div>
-        <div class="nfc-wave"></div>
-        <div class="nfc-wave"></div>
     </div>
-    <div class="nfc-image">
-        <img src="images/nfc.jpg" alt="NFC Image">
-    </div>
-    <p id="nfc-status">Bring device closer and move it...</p>
 
-    <button id="start-scan-btn" class="btn">Start Scanning</button>
-    <button id="skip-nfc-btn" class="btn">Skip NFC Detection</button>
-</div>
+    <!-- App Overview Page -->
+    <div id="app-overview-page" class="page">
+        <h1>App Overview</h1>
+        <div class="instructions-content">
+            <h2>Instructions</h2>
+            <p>Installation instructions and troubleshooting can be found from the bottom toolbar. Here is a quick guide
+            </p>
+            <!-- Image Gallery -->
+            <div class="image-gallery-container">
+                <div class="image-gallery">
+                    <div class="gallery-item">
+                        <img src="images/new1.png" alt="New 1">
+                        <p class="gallery-caption">Physically install the sensor</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/new2.png" alt="New 2">
+                        <p class="gallery-caption">Hold reference device</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/new3.png" alt="New 3">
+                        <p class="gallery-caption">Update values in the app</p>
+                    </div>
+                </div>
+            </div>
 
-<!-- Connected Page -->
-<div id="connected-page" class="page">
-    <h1>Scan complete</h1>
-    <div class="nfc-image">
-        <img src="images/nfc.jpg" alt="NFC Image">
+        </div>
+        <button id="skip-instructions-btn" class="btn">Skip Instructions</button>
     </div>
-    <p>Device HMD connected</p>
-    <p>Device ID: <span id="device-id">--</span></p>
-    <button id="" class="btn">Done</button>
-</div>
-<script src="script.js"></script>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+        <h1>Login</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit" class="btn">Log in</button>
+        </form>
+    </div>
+
+    <!-- Scan NFC Page -->
+    <div id="scan-page" class="page">
+        <h1>Ready to scan</h1>
+        <div class="nfc-icon">
+            <div class="nfc-wave"></div>
+            <div class="nfc-wave"></div>
+            <div class="nfc-wave"></div>
+        </div>
+        <div class="nfc-image">
+            <img src="images/nfc.jpg" alt="NFC Image">
+        </div>
+        <p id="nfc-status">Bring device closer and move it...</p>
+
+        <!--<button id="start-scan-btn" class="btn">Start Scanning</button>-->
+        <button id="start-scan-btn" class="btn">
+            <i class="ph-bold ph-scan"></i> Start Scanning
+        </button>
+        <button id="skip-nfc-btn" class="btn">Skip NFC Detection</button>
+    </div>
+
+    <!-- Connected Page -->
+    <div id="connected-page" class="page">
+        <h1>Scan complete</h1>
+        <div class="nfc-image">
+            <img src="images/nfc.jpg" alt="NFC Image">
+        </div>
+        <p>Device HMD connected</p>
+        <p>Device ID: <span id="device-id">--</span></p>
+        <button id="done-btn" class="btn">Done</button>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Bottom Toolbar -->
+    <div class="bottom-toolbar">
+        <div class="toolbar-item">
+            <i class="ph-light ph-house"></i>
+            <span>Home</span>
+        </div>
+        <div class="toolbar-item">
+            <i class="ph-light ph-article"></i>
+            <span>Instructions</span>
+        </div>
+        <div class="toolbar-item">
+            <i class="ph-light ph-chat-teardrop"></i>
+            <span>Assistance</span>
+        </div>
+        <div class="toolbar-item">
+            <i class="ph-light ph-gear"></i>
+            <span>Settings</span>
+        </div>
+    </div>
 </body>
 
 </html>
