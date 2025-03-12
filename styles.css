@@ -1,4 +1,4 @@
-/* Inline styles to ensure they're loaded */
+/* #0D374F dark blue, 3F645E dark mint*/
 body {
     font-family: Arial, sans-serif;
     max-width: 400px;
@@ -41,7 +41,7 @@ h1 {
     padding: 8px 16px;
     margin: 10px 0;
     font-size: 14px;
-    background-color: #4CAF50;
+    background-color: #0D374F;
     color: white;
     border: none;
     border-radius: 8px;
@@ -51,7 +51,8 @@ h1 {
     text-transform: uppercase;
 }
 
-/* Keep login button full width */
+/*  #45a049, dark mint 3F645E, light mint 72A2AB*/
+/*104360  dark blue lighter, 186795*/
 #loginButton.btn {
     width: 100%;
     padding: 15px;
@@ -60,7 +61,7 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #45a049;
+    background-color: #186795;
 }
 
 #nfc-status {
@@ -201,25 +202,67 @@ p {
 .button-group {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 15px;
     margin-top: 30px;
     margin-bottom: 20px;
 }
 
 .button-group .btn {
-    width: 100%;
+    width: auto;
+    /* 100%; */
     padding: 15px;
     font-size: 16px;
     margin: 0;
 }
 
-/* App overview page */
-.instructions-content {
-    background-color: #f9f9f9;
-    border-radius: 8px;
+/* Main menu buttons specifically */
+#mainmenu1,
+#mainmenu2,
+#mainmenu3 {
+    width: 100%;
+    /* These specific buttons take full width */
+    text-align: left;
+    /* Text stays left-aligned within the button */
     padding: 15px;
-    margin: 20px 0;
-    border: 1px solid #eee;
+    font-size: 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Update for instructions-content to remove container styling */
+.instructions-content {
+    /* Remove container-like styling */
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make h2 and p consistent with existing styles */
+.instructions-content h2 {
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.instructions-content p {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Adjust the image gallery margins to be more consistent */
+.image-gallery-container {
+    width: 100%;
+    margin: 15px 0 25px;
+    overflow: hidden;
 }
 
 #skip-instructions-btn {
@@ -229,12 +272,6 @@ p {
     margin-top: 25px;
 }
 
-/* Horizontal Image Gallery Styles */
-.image-gallery-container {
-    width: 100%;
-    margin: 20px 0;
-    overflow: hidden;
-}
 
 .image-gallery {
     display: flex;
@@ -243,7 +280,8 @@ p {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 15px;
-    /* Space for scrollbar */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .gallery-item {
@@ -252,6 +290,8 @@ p {
     margin-right: 15px;
     border-radius: 8px;
     overflow: hidden;
+    max-width: 80%;
+    box-sizing: border-box;
 }
 
 .gallery-item:last-child {
@@ -263,6 +303,7 @@ p {
     height: auto;
     object-fit: cover;
     border-radius: 8px;
+    display: block;
 }
 
 .gallery-caption {
@@ -301,7 +342,7 @@ p {
     color: #2196F3;
 }
 
-/* Bottom Toolbar Styles */
+/* Bottom Toolbar Styles #104360 */
 .bottom-toolbar {
     position: fixed;
     bottom: 0;
@@ -309,7 +350,7 @@ p {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    background-color: #1a3a5f;
+    background-color: #0D374F;
     /* Dark blue color */
     padding: 10px 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
@@ -370,7 +411,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #1a3a5f;
+    background-color: #0D374F;
     color: white;
     padding: 12px 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -413,4 +454,63 @@ body:not(.at-welcome-page) .top-toolbar {
     .top-toolbar {
         border-radius: 0 0 0 0;
     }
+}
+
+/*-----------*/
+/* Update the container styling for desktop view */
+@media screen and (min-width: 600px) {
+    body {
+        border: 1px solid #ddd;
+        border-radius: 16px 16px 0 0;
+        /* Rounded corners only at the top */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        height: 100vh;
+        /* Full viewport height instead of 85vh */
+        overflow-y: auto;
+        position: relative;
+        padding-bottom: 0;
+        /* Remove bottom padding */
+        max-height: 800px;
+        /* Optional maximum height */
+        margin: 20px auto;
+        /* Add some margin at top and bottom */
+    }
+
+    .page {
+        min-height: auto;
+        /* Remove fixed min-height */
+        padding-bottom: 60px;
+        /* Add padding at the bottom for toolbar */
+    }
+
+    /* Ensure the bottom toolbar sticks to the bottom of the container */
+    .bottom-toolbar {
+        max-width: 400px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        border-radius: 0 0 16px 16px;
+        position: fixed;
+    }
+
+    /* Fix for the skip button */
+    #skip-instructions-btn {
+        margin-bottom: 70px;
+    }
+}
+
+/* Adjust page margin to make room for toolbar properly */
+.page {
+    margin-bottom: 60px;
+    /* Reduced from 100px to 60px */
+}
+
+/* Fix body padding */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+    /* Remove bottom padding */
+    box-sizing: border-box;
 }
