@@ -19,6 +19,30 @@
             <span>Set up new sensor</span>
         </div>
     </div>
+
+    <!-- Progress Bar  -->
+    <div id="progress-bar-container" class="hidden">
+        <div class="progress-bar">
+            <div class="progress-step" id="step-scan">
+                <div class="step-circle">
+                    <span class="step-dot"></span>
+                </div>
+                <span class="step-label">Configure</span>
+            </div>
+            <div class="progress-line" id="line-1"></div>
+            <div class="progress-step" id="step-config">
+                <div class="step-circle">
+
+                </div>
+                <span class="step-label">Calibrate</span>
+            </div>
+            <div class="progress-line" id="line-2"></div>
+            <div class="progress-step" id="step-calibrate">
+                <div class="step-circle"></div>
+                <span class="step-label">Maintain</span>
+            </div>
+        </div>
+    </div>
     <!-- Welcome Page -->
     <div id="welcome-page" class="page active">
         <h1>Welcome</h1>
@@ -53,6 +77,10 @@
                         <img src="images/new3.png" alt="New 3">
                         <p class="gallery-caption">Update values in the app</p>
                     </div>
+                    <div class="gallery-item">
+                        <img src="images/new4.png" alt="New 4">
+                        <p class="gallery-caption">Calibration complete</p>
+                    </div>
                 </div>
             </div>
 
@@ -75,7 +103,17 @@
             <button type="submit" class="btn">Log in</button>
         </form>
     </div>
-
+    <!-- NFC Information Page -->
+    <div id="nfc-info-page" class="page">
+        <h1>NFC</h1>
+        <p>Phone can be connected</p>
+        <div class="nfc-image pre-nfc">
+            <img src="images/pre-nfcc.png" alt="NFC Connection">
+        </div>
+        <p>NFC is short range (several cm) and phone does NOT stay connected to the sensor, so you have to reconnect if
+            you get disconnected.</p>
+        <button id="nfc-next-btn" class="btn">Next</button>
+    </div>
     <!-- Scan NFC Page -->
     <div id="scan-page" class="page">
         <h1>Ready to scan</h1>
@@ -87,11 +125,11 @@
         <div class="nfc-image">
             <img src="images/nfc.jpg" alt="NFC Image">
         </div>
-        <p id="nfc-status">Bring device closer and move it...</p>
+        <p id="nfc-status">Bring phone closer and move it around until the scan is complete</p>
 
-        <!--<button id="start-scan-btn" class="btn">Start Scanning</button>-->
+        <!-- <i class="ph-bold ph-scan"></i>   <button id="start-scan-btn" class="btn">Start Scanning</button>-->
         <button id="start-scan-btn" class="btn">
-            <i class="ph-bold ph-scan"></i> Start Scanning
+            Start Scanning
         </button>
         <button id="skip-nfc-btn" class="btn">Skip NFC Detection</button>
     </div>
@@ -102,9 +140,36 @@
         <div class="nfc-image">
             <img src="images/nfc.jpg" alt="NFC Image">
         </div>
-        <p>Device HMD connected</p>
-        <p>Device ID: <span id="device-id">--</span></p>
+        <p>Sensor HMD90 connected</p>
+        <p>NFC tag ID: <span id="device-id">--</span></p>
         <button id="done-btn" class="btn">Done</button>
+    </div>
+
+    <!-- Configuration Page -->
+    <div id="configuration-page" class="page">
+        <h1>Configuration</h1>
+        <div class="config-container">
+            <div class="device-info">
+                <img src="images/hmw90.png" alt="Device Image">
+                <div class="device-text">
+                    <p id="device_name">HMW90</p>
+                    <p id="device_name_2"> HMD60929192298y298</p>
+                    <p><span class="status-dot"></span>Connected to sensor</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="device-name">Sensor name</label>
+            <input type="text" id="device-name" name="device-name" placeholder="Edit the name (optional)">
+        </div>
+        <div class="form-group">
+            <label for="device-location">Location</label>
+            <input type="text" id="device-location" name="device-location" placeholder="Edit location (optional)">
+        </div>
+        <div class="button-row">
+            <button id="back-btn" class="btn btn-secondary">Back</button>
+            <button id="next-btn" class="btn">Next</button>
+        </div>
     </div>
 
     <script src="script.js"></script>

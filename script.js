@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const skipInstructionsBtn = document.getElementById('skip-instructions-btn');
     const mainMenuBtns = document.querySelectorAll('#welcome-page .btn');
     const backButton = document.querySelector('.back-button');
+    const nfcInfoPage = document.getElementById('nfc-info-page');
+    const nfcNextBtn = document.getElementById('nfc-next-btn');
+    const configurationPage = document.getElementById('configuration-page');
+    const backBtn = document.getElementById('back-btn');
+    const nextBtn = document.getElementById('next-btn');
+
 
     if (backButton) {
         backButton.addEventListener('click', function () {
@@ -20,44 +26,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Update top toolbar text based on current page
-    function updateTopToolbarText_no() {
-        const backButtonText = document.querySelector('.back-button span');
-        if (!backButtonText) return;
 
-        if (document.getElementById('app-overview-page').classList.contains('active')) {
-            backButtonText.textContent = 'Set up new sensor';
-        } else if (document.getElementById('login-page').classList.contains('active')) {
-            backButtonText.textContent = 'Calibrate existing sensor';
-        } else if (document.getElementById('scan-page').classList.contains('active')) {
-            backButtonText.textContent = 'Scan NFC tag';
-        } else if (document.getElementById('connected-page').classList.contains('active')) {
-            backButtonText.textContent = 'Connected device';
-        }
-    }
+
 
     // Call this function when changing pages
-    const originalShowPage = window.showPage || function () { };
-    window.showPage = function (pageId) {
-        originalShowPage(pageId);
-        updateTopToolbarText();
-    };
+    //const originalShowPage = window.showPage || function () { };
+    //window.showPage = function (pageId) {
+    //    originalShowPage(pageId);
+    //    updateTopToolbarText();    };
 
-    // Show specified page
-    function showPageold(pageId) {
-        // Hide all pages by removing active class
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-        });
 
-        // Show the specified page by adding active class
-        const pageToShow = document.getElementById(pageId);
-        if (pageToShow) {
-            pageToShow.classList.add('active');
-        }
-    }
-    // Add this near the top of your document.addEventListener('DOMContentLoaded', function () { ... });
-    // This adds a class to the body to indicate when we're at the welcome page
 
     // Set initial state based on which page is active on load
     if (document.getElementById('welcome-page').classList.contains('active')) {
@@ -85,8 +63,24 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             document.body.classList.remove('at-welcome-page');
         }
+        updateProgressBar(pageId);
+    }
+    // NFC Info page next button
+    if (nfcNextBtn) {
+        nfcNextBtn.addEventListener('click', function () {
+            showPage('scan-page');
+        });
     }
 
+    // Modify the login form submission handler
+    // Replace the existing login form event listener (around line 75) with this:
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+            showPage('nfc-info-page'); // Changed from scan-page to nfc-info-page
+            return false;
+        });
+    }
     // Set up event listeners for welcome page buttons
     if (mainMenuBtns) {
         mainMenuBtns.forEach((btn, index) => {
@@ -102,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
     // Skip instructions button
     if (skipInstructionsBtn) {
         skipInstructionsBtn.addEventListener('click', function () {
@@ -109,14 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Handle login form submission
-    if (loginForm) {
-        loginForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form submission
-            showPage('scan-page');
-            return false;
-        });
-    }
+
 
     // Start scan button - initiate NFC scanning
     if (startScanBtn) {
@@ -139,6 +127,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const doneBtn = document.getElementById('done-btn');
     if (doneBtn) {
         doneBtn.addEventListener('click', function () {
+            showPage('configuration-page');
+        });
+    }
+    if (backBtn) {
+        backBtn.addEventListener('click', function () {
+            showPage('connected-page');
+        });
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
             showPage('welcome-page');
         });
     }
@@ -190,6 +188,43 @@ document.addEventListener('DOMContentLoaded', function () {
                 nfcStatus.textContent = errorMessage;
             }
         }
+    }
+
+    function updateProgressBar(pageId) {
+        const progressBarContainer = document.getElementById('progress-bar-container');
+
+        // Pages that should show the progress bar
+        const progressBarPages = ['configuration-page'];
+
+        // Show/hide progress bar based on current page
+        if (progressBarPages.includes(pageId)) {
+            progressBarContainer.classList.remove('hidden');
+            document.getElementById(pageId).classList.add('with-progress-bar');
+
+            // Update step status based on current page
+            if (pageId === 'configuration-page') {
+                // First step - current with dot
+                document.getElementById('step-scan').classList.remove('completed');
+                document.getElementById('step-scan').classList.add('current');
+
+                // Lines and other steps - inactive
+                document.getElementById('line-1').classList.remove('completed');
+                document.getElementById('step-config').classList.remove('current', 'completed');
+                document.getElementById('step-calibrate').classList.remove('completed', 'current');
+                document.getElementById('line-2').classList.remove('completed');
+            }
+            document.getElementById(pageId).style.paddingTop = "calc(60px + 2cm)";
+
+        } else {
+            progressBarContainer.classList.add('hidden');
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('with-progress-bar');
+            });
+        }
+    }
+    const activePage = document.querySelector('.page.active');
+    if (activePage) {
+        updateProgressBar(activePage.id);
     }
 
 });
