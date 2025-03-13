@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const configurationPage = document.getElementById('configuration-page');
     const backBtn = document.getElementById('back-btn');
     const nextBtn = document.getElementById('next-btn');
+    const calibrationPage = document.getElementById('calibration-page');
+    const calibrationBackBtn = document.getElementById('calibration-back-btn');
+    const calibrationNextBtn = document.getElementById('calibration-next-btn');
+    const calibrationOptionsPage = document.getElementById('calibration-options-page');
+    const calibOptionsBackBtn = document.getElementById('calib-options-back-btn');
+    const calibOptionsNextBtn = document.getElementById('calib-options-next-btn');
+    const radioOptions = document.querySelectorAll('.radio-option input[type="radio"]');
+
+
 
 
     if (backButton) {
@@ -137,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (nextBtn) {
         nextBtn.addEventListener('click', function () {
-            showPage('welcome-page');
+            showPage('calibration-page');
         });
     }
 
@@ -189,14 +198,109 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-
+    // Modify the updateProgressBar function with the correct step IDs
     function updateProgressBar(pageId) {
         const progressBarContainer = document.getElementById('progress-bar-container');
 
         // Pages that should show the progress bar
-        const progressBarPages = ['configuration-page'];
+        const progressBarPages = ['configuration-page', 'calibration-page', 'calibration-options-page'];
 
         // Show/hide progress bar based on current page
+        if (progressBarPages.includes(pageId)) {
+            progressBarContainer.classList.remove('hidden');
+            document.getElementById(pageId).classList.add('with-progress-bar');
+
+            // Update step status based on current page
+            if (pageId === 'configuration-page') {
+                // First step - current with dot
+                document.getElementById('step-config').classList.remove('completed');
+                document.getElementById('step-config').classList.add('current');
+
+                // Lines and other steps - inactive
+                document.getElementById('line-1').classList.remove('completed');
+                document.getElementById('step-calibrate').classList.remove('current', 'completed');
+                document.getElementById('step-maintain').classList.remove('completed', 'current');
+                document.getElementById('line-2').classList.remove('completed');
+            } else if (pageId === 'calibration-page' || pageId === 'calibration-options-page') {
+                // First step - completed with check mark
+                document.getElementById('step-config').classList.remove('current');
+                document.getElementById('step-config').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - current with dot
+                document.getElementById('step-calibrate').classList.add('current');
+                document.getElementById('step-calibrate').classList.remove('completed');
+
+                // Third step and second line - inactive
+                document.getElementById('line-2').classList.remove('completed');
+                document.getElementById('step-maintain').classList.remove('current', 'completed');
+            }
+            document.getElementById(pageId).style.paddingTop = "calc(60px + 2cm)";
+
+        } else {
+            progressBarContainer.classList.add('hidden');
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('with-progress-bar');
+            });
+        }
+    }
+    function updateProgressBarold1(pageId) {
+        const progressBarContainer = document.getElementById('progress-bar-container');
+
+        // Pages that should show the progress bar
+        const progressBarPages = ['configuration-page', 'calibration-page'];
+
+        // Show/hide progress bar based on current page
+        if (progressBarPages.includes(pageId)) {
+            progressBarContainer.classList.remove('hidden');
+            document.getElementById(pageId).classList.add('with-progress-bar');
+
+            // Update step status based on current page
+            if (pageId === 'configuration-page') {
+                // First step - current with dot
+                document.getElementById('step-config').classList.remove('completed');
+                document.getElementById('step-config').classList.add('current');
+
+                // Lines and other steps - inactive
+                document.getElementById('line-1').classList.remove('completed');
+                document.getElementById('step-calibrate').classList.remove('current', 'completed');
+                document.getElementById('step-maintain').classList.remove('completed', 'current');
+                document.getElementById('line-2').classList.remove('completed');
+            } else if (pageId === 'calibration-page') {
+                // First step - completed with check mark
+                document.getElementById('step-config').classList.remove('current');
+                document.getElementById('step-config').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - current with dot
+                document.getElementById('step-calibrate').classList.add('current');
+                document.getElementById('step-calibrate').classList.remove('completed');
+
+                // Third step and second line - inactive
+                document.getElementById('line-2').classList.remove('completed');
+                document.getElementById('step-maintain').classList.remove('current', 'completed');
+            }
+            document.getElementById(pageId).style.paddingTop = "calc(60px + 2cm)";
+
+        } else {
+            progressBarContainer.classList.add('hidden');
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('with-progress-bar');
+            });
+        }
+    }
+    function updateProgressBarold(pageId) {
+        const progressBarContainer = document.getElementById('progress-bar-container');
+
+        // Pages that should show the progress bar
+        const progressBarPages = ['configuration-page', 'calibration-page'];
+
+        // Show/hide progress bar based on current page
+
         if (progressBarPages.includes(pageId)) {
             progressBarContainer.classList.remove('hidden');
             document.getElementById(pageId).classList.add('with-progress-bar');
@@ -212,6 +316,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('step-config').classList.remove('current', 'completed');
                 document.getElementById('step-calibrate').classList.remove('completed', 'current');
                 document.getElementById('line-2').classList.remove('completed');
+            } else if (pageId === 'calibration-page') {
+                // First step - completed
+                document.getElementById('step-scan').classList.remove('current');
+                document.getElementById('step-scan').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - current
+                document.getElementById('step-config').classList.add('current');
+                document.getElementById('step-config').classList.remove('completed');
+
+                // Third step and second line - inactive
+                document.getElementById('line-2').classList.remove('completed');
+                document.getElementById('step-calibrate').classList.remove('current', 'completed');
             }
             document.getElementById(pageId).style.paddingTop = "calc(60px + 2cm)";
 
@@ -226,5 +345,66 @@ document.addEventListener('DOMContentLoaded', function () {
     if (activePage) {
         updateProgressBar(activePage.id);
     }
+
+    if (calibrationBackBtn) {
+        calibrationBackBtn.addEventListener('click', function () {
+            showPage('configuration-page');
+        });
+    }
+
+    if (calibrationNextBtn) {
+        calibrationNextBtn.addEventListener('click', function () {
+            showPage('welcome-page'); // Change this to your next page
+        });
+    }
+    if (calibOptionsBackBtn) {
+        calibOptionsBackBtn.addEventListener('click', function () {
+            showPage('calibration-page');
+        });
+    }
+
+    if (calibOptionsNextBtn) {
+        calibOptionsNextBtn.addEventListener('click', function () {
+            // Check which option is selected
+            const selectedOption = document.querySelector('input[name="calibration-option"]:checked');
+            if (selectedOption) {
+                if (selectedOption.value === 'calibrate') {
+                    // If "Calibrate" is selected, go to next calibration step
+                    showPage('welcome-page'); // Change this to your next page
+                } else {
+                    // If "Already calibrated" is selected, maybe skip to a different page
+                    showPage('welcome-page'); // Change this based on your flow
+                }
+            } else {
+                // If nothing is selected, you might want to show a message
+                alert('Please select an option');
+            }
+        });
+    }
+
+    // Update the calibrationNextBtn click handler to go to the new page
+    if (calibrationNextBtn) {
+        calibrationNextBtn.addEventListener('click', function () {
+            showPage('calibration-options-page');
+        });
+    }
+
+    // Add event listeners for radio option styling
+    if (radioOptions) {
+        radioOptions.forEach(radio => {
+            radio.addEventListener('change', function () {
+                // Remove selected class from all options
+                document.querySelectorAll('.radio-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // Add selected class to the parent of the checked radio
+                if (this.checked) {
+                    this.closest('.radio-option').classList.add('selected');
+                }
+            });
+        });
+    }
+
 
 });

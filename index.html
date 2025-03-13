@@ -23,22 +23,24 @@
     <!-- Progress Bar  -->
     <div id="progress-bar-container" class="hidden">
         <div class="progress-bar">
-            <div class="progress-step" id="step-scan">
+            <div class="progress-step" id="step-config">
                 <div class="step-circle">
                     <span class="step-dot"></span>
                 </div>
                 <span class="step-label">Configure</span>
             </div>
             <div class="progress-line" id="line-1"></div>
-            <div class="progress-step" id="step-config">
+            <div class="progress-step" id="step-calibrate">
                 <div class="step-circle">
-
+                    <span class="step-dot"></span>
                 </div>
                 <span class="step-label">Calibrate</span>
             </div>
             <div class="progress-line" id="line-2"></div>
-            <div class="progress-step" id="step-calibrate">
-                <div class="step-circle"></div>
+            <div class="progress-step" id="step-maintain">
+                <div class="step-circle">
+                    <span class="step-dot"></span>
+                </div>
                 <span class="step-label">Maintain</span>
             </div>
         </div>
@@ -122,8 +124,8 @@
             <div class="nfc-wave"></div>
             <div class="nfc-wave"></div>
         </div>
-        <div class="nfc-image">
-            <img src="images/nfc.jpg" alt="NFC Image">
+        <div class="ready-to-scan">
+            <img src="images/ready-to-scan.png" alt="NFC">
         </div>
         <p id="nfc-status">Bring phone closer and move it around until the scan is complete</p>
 
@@ -137,12 +139,13 @@
     <!-- Connected Page -->
     <div id="connected-page" class="page">
         <h1>Scan complete</h1>
-        <div class="nfc-image">
-            <img src="images/nfc.jpg" alt="NFC Image">
+
+        <div class="scan-complete">
+            <img src="images/scan-complete.png" alt="scan complete">
         </div>
-        <p>Sensor HMD90 connected</p>
+        <p id="scanComplete">Sensor HMD90 connected</p>
         <p>NFC tag ID: <span id="device-id">--</span></p>
-        <button id="done-btn" class="btn">Done</button>
+        <button id="done-btn" class="btn">Next</button>
     </div>
 
     <!-- Configuration Page -->
@@ -171,7 +174,57 @@
             <button id="next-btn" class="btn">Next</button>
         </div>
     </div>
+    <!-- Calibration Page -->
+    <div id="calibration-page" class="page">
+        <h1>Current values</h1>
+        <p>Values for the last 24 hours can be viewed here</p>
 
+        <div class="calibration-container">
+            <div class="value-group">
+                <label for="current-value">Current value</label>
+                <div class="value-display">0.03 C</div>
+            </div>
+
+            <div class="value-group">
+                <label for="select-values">Select values</label>
+                <select id="select-values" class="value-select">
+                    <option value="temperature">Temperature</option>
+                    <option value="humidity">Humidity</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <img src="images/chart.png" alt="Chart" class="chart-image">
+        </div>
+
+        <div class="button-row">
+            <button id="calibration-back-btn" class="btn btn-secondary">Back</button>
+            <button id="calibration-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+    <!-- Calibration Options Page -->
+    <div id="calibration-options-page" class="page">
+        <h1>Calibration</h1>
+        <p>Device package should contain information if it is pre-calibrated</p>
+
+        <div class="radio-options-container">
+            <div class="radio-option">
+                <input type="radio" id="calibrate-option" name="calibration-option" value="calibrate">
+                <label for="calibrate-option">Calibrate</label>
+            </div>
+
+            <div class="radio-option">
+                <input type="radio" id="pre-calibrated-option" name="calibration-option" value="pre-calibrated">
+                <label for="pre-calibrated-option">The sensor is already calibrated</label>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="calib-options-back-btn" class="btn btn-secondary">Back</button>
+            <button id="calib-options-next-btn" class="btn">Next</button>
+        </div>
+    </div>
     <script src="script.js"></script>
     <!-- Bottom Toolbar -->
     <div class="bottom-toolbar">
