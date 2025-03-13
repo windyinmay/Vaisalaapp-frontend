@@ -138,6 +138,7 @@
 
     <!-- Connected Page -->
     <div id="connected-page" class="page">
+        <p><span class="status-dot"></span>Connected to sensor</p>
         <h1>Scan complete</h1>
 
         <div class="scan-complete">
@@ -223,6 +224,52 @@
         <div class="button-row">
             <button id="calib-options-back-btn" class="btn btn-secondary">Back</button>
             <button id="calib-options-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Calibration Input Page -->
+    <div id="calibration-input-page" class="page">
+        <h1>Calibration</h1>
+
+        <div class="info-container">
+            <p id="calibration-info">Hold the reference device next to the sensor device and wait for the values to
+                stabilize. <span class="see-more">See more</span></p>
+            <p id="additional-info" class="hidden">Make sure reference device and sensor are in the same conditions,
+                without direct sunlight and at a distance from heat sources. Input the measurement (20.45 format)</p>
+        </div>
+
+        <p class="sensor-status"><span class="status-dot-red"></span>Not connected to sensor</p>
+
+        <h2>Reference values</h2>
+
+        <!-- Replace the reference-input-container content -->
+        <div class="reference-input-container">
+            <div class="reference-input-row">
+                <label for="temperature-input">Temperature</label>
+                <div class="input-unit-group">
+                    <input type="text" id="temperature-input" placeholder="-" inputmode="decimal">
+                    <select id="temperature-unit">
+                        <option value="celsius">Celsius</option>
+                        <option value="fahrenheit">Fahrenheit</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="reference-input-row">
+                <label for="humidity-input">Humidity</label>
+                <div class="input-unit-group">
+                    <input type="text" id="humidity-input" placeholder="-" inputmode="decimal">
+                    <select id="humidity-unit">
+                        <option value="percent">%</option>
+                        <option value="ppm">ppm</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="calibration-input-back-btn" class="btn btn-secondary">Back</button>
+            <button id="calibration-input-next-btn" class="btn" disabled>Next</button>
         </div>
     </div>
     <script src="script.js"></script>
