@@ -57,6 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const probeMountingPage = document.getElementById('probe-mounting-page');
     const probeMountingBackBtn = document.getElementById('probe-mounting-back-btn');
     const probeMountingNextBtn = document.getElementById('probe-mounting-next-btn');
+    const step1Page = document.getElementById('step1-page');
+    const step1BackBtn = document.getElementById('step1-back-btn');
+    const step1NextBtn = document.getElementById('step1-next-btn');
+    const step2Page = document.getElementById('step2-page');
+    const step2BackBtn = document.getElementById('step2-back-btn');
+    const step2NextBtn = document.getElementById('step2-next-btn');
+    const step3Page = document.getElementById('step3-page');
+    const step3BackBtn = document.getElementById('step3-back-btn');
+    const step3NextBtn = document.getElementById('step3-next-btn');
+    const step4Page = document.getElementById('step4-page');
+    const step4BackBtn = document.getElementById('step4-back-btn');
+    const step4NextBtn = document.getElementById('step4-next-btn');
+    const step56Page = document.getElementById('step5-6-page');
+    const step56BackBtn = document.getElementById('step5-6-back-btn');
+    const step56DoneBtn = document.getElementById('step5-6-done-btn');
+    const intervalSelect = document.getElementById('calibration-interval');
+    const customIntervalInput = document.getElementById('custom-interval');
+
 
 
     let currentFlow = 'setup'; // Default flow is 'setup', alternative is 'calibration'
@@ -135,7 +153,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Update top toolbar text based on current page
-        if (pageId === 'instructions-page' || pageId === 'installation-guide-page' || pageId === 'probe-mounting-page') {
+        if (pageId === 'instructions-page' ||
+            pageId === 'installation-guide-page' ||
+            pageId === 'probe-mounting-page' ||
+            pageId === 'step1-page' ||
+            pageId === 'step2-page' ||
+            pageId === 'step3-page' ||
+            pageId === 'step4-page' ||
+            pageId === 'step5-6-page') {
             // For instructions and related pages, show "Instructions"
             const backButtonText = document.querySelector('.back-button span');
             if (backButtonText) {
@@ -756,10 +781,211 @@ document.addEventListener('DOMContentLoaded', function () {
     if (probeMountingNextBtn) {
         probeMountingNextBtn.addEventListener('click', function () {
             // Navigate to the next page or back to instructions
-            showPage('instructions-page');
+            showPage('step1-page');
+        });
+    }
+    if (step1BackBtn) {
+        step1BackBtn.addEventListener('click', function () {
+            showPage('probe-mounting-page');
         });
     }
 
+    if (step1NextBtn) {
+        step1NextBtn.addEventListener('click', function () {
+            showPage('step2-page');
+        });
+    }
 
+    // Step 2 page navigation
+    if (step2BackBtn) {
+        step2BackBtn.addEventListener('click', function () {
+            showPage('step1-page');
+        });
+    }
+
+    if (step2NextBtn) {
+        step2NextBtn.addEventListener('click', function () {
+            showPage('step3-page');
+        });
+    }
+
+    // Step 3 page navigation
+    if (step3BackBtn) {
+        step3BackBtn.addEventListener('click', function () {
+            showPage('step2-page');
+        });
+    }
+
+    if (step3NextBtn) {
+        step3NextBtn.addEventListener('click', function () {
+            showPage('step4-page');
+        });
+    }
+
+    // Step 4 page navigation
+    if (step4BackBtn) {
+        step4BackBtn.addEventListener('click', function () {
+            showPage('step3-page');
+        });
+    }
+
+    if (step4NextBtn) {
+        step4NextBtn.addEventListener('click', function () {
+            showPage('step5-6-page');
+        });
+    }
+
+    // Step 5-6 page navigation
+    if (step56BackBtn) {
+        step56BackBtn.addEventListener('click', function () {
+            showPage('step4-page');
+        });
+    }
+
+    if (step56DoneBtn) {
+        step56DoneBtn.addEventListener('click', function () {
+            showPage('instructions-page');
+        });
+    }
+    // Function to format date as "DD Month YYYY"
+    function formatDate(date) {
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    // Function to calculate and update due date based on selected interval
+    function updateDueDateold() {
+        const intervalSelect = document.getElementById('calibration-interval');
+        const dueDateContainer = document.getElementById('due-date-container');
+
+        if (!intervalSelect || !dueDateContainer) return;
+
+        let months = 6; // Default
+
+        if (intervalSelect.value === 'other') {
+            const customIntervalInput = document.getElementById('custom-interval');
+            if (customIntervalInput && customIntervalInput.value) {
+                months = parseInt(customIntervalInput.value, 10);
+            }
+        } else {
+            months = parseInt(intervalSelect.value, 10);
+        }
+
+        // Calculate due date from today
+        const dueDate = new Date();
+        dueDate.setMonth(dueDate.getMonth() + months);
+
+        // Update the displayed date
+        const dueDateElement = document.getElementById('calibration-due-date');
+        if (dueDateElement) {
+            dueDateElement.textContent = formatDate(dueDate);
+        }
+        if (!intervalSelect.value) {
+            document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
+            return;
+        }
+
+        // Replace the initial updateDueDate() call in the DOMContentLoaded section with:
+        document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
+    }
+    function updateDueDateold2() {
+        const intervalSelect = document.getElementById('calibration-interval');
+        const dueDateContainer = document.getElementById('due-date-container');
+
+        if (!intervalSelect || !dueDateContainer) return;
+
+        // Check if a valid option is selected first
+        if (!intervalSelect.value) {
+            document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
+            return;
+        }
+
+        let months = 6; // Default
+
+        if (intervalSelect.value === 'other') {
+            const customIntervalInput = document.getElementById('custom-interval');
+            if (customIntervalInput && customIntervalInput.value) {
+                months = parseInt(customIntervalInput.value, 10);
+            }
+        } else {
+            months = parseInt(intervalSelect.value, 10);
+        }
+
+        // Calculate due date from today
+        const dueDate = new Date();
+        dueDate.setMonth(dueDate.getMonth() + months);
+
+        // Update the displayed date
+        const dueDateElement = document.getElementById('calibration-due-date');
+        if (dueDateElement) {
+            dueDateElement.textContent = formatDate(dueDate);
+        }
+    }
+
+    function updateDueDate() {
+        const intervalSelect = document.getElementById('calibration-interval');
+        const dueDateContainer = document.getElementById('due-date-container');
+
+        if (!intervalSelect || !dueDateContainer) return;
+
+        // Check if a valid option is selected
+        if (!intervalSelect.value || intervalSelect.value === "") {
+            dueDateContainer.classList.remove('visible');
+            return;
+        }
+
+        // Show the due date container when an interval is selected
+        dueDateContainer.classList.add('visible');
+
+        let months = 6; // Default
+
+        if (intervalSelect.value === 'other') {
+            const customIntervalInput = document.getElementById('custom-interval');
+            if (customIntervalInput && customIntervalInput.value) {
+                months = parseInt(customIntervalInput.value, 10);
+            }
+        } else {
+            months = parseInt(intervalSelect.value, 10);
+        }
+
+        // Calculate due date from today
+        const dueDate = new Date();
+        dueDate.setMonth(dueDate.getMonth() + months);
+
+        // Update the displayed date
+        const dueDateElement = document.getElementById('calibration-due-date');
+        if (dueDateElement) {
+            dueDateElement.textContent = formatDate(dueDate);
+        }
+    }
+
+    // This part should be in your DOMContentLoaded event handler, not inside updateDueDate:
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initial state setup
+        document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
+
+        // Event listeners
+        const intervalSelect = document.getElementById('calibration-interval');
+        if (intervalSelect) {
+            intervalSelect.addEventListener('change', updateDueDate);
+        }
+
+        const customIntervalInput = document.getElementById('custom-interval');
+        if (customIntervalInput) {
+            customIntervalInput.addEventListener('input', updateDueDate);
+        }
+    });
+    if (intervalSelect) {
+        // Initial due date calculation
+        updateDueDate();
+
+        // Update when dropdown changes
+        intervalSelect.addEventListener('change', updateDueDate);
+    }
+
+    if (customIntervalInput) {
+        // Update when custom interval changes
+        customIntervalInput.addEventListener('input', updateDueDate);
+    }
 
 });

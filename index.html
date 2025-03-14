@@ -12,6 +12,9 @@
 </head>
 
 <body>
+    <div class="welcome-top-toolbar">
+        <img src="images/logo_small.png" alt="Logo" style="max-height: 28px;">
+    </div>
     <!-- Top Toolbar -->
     <div class="top-toolbar">
         <div class="back-button">
@@ -225,7 +228,7 @@
     <!-- Calibration Options Page -->
     <div id="calibration-options-page" class="page">
         <h1>Calibration</h1>
-        <p>Device package should contain information if it is pre-calibrated</p>
+        <p>Sensor package should contain information if it is pre-calibrated</p>
 
         <div class="radio-options-container">
             <div class="radio-option">
@@ -326,7 +329,7 @@
         </div>
     </div>
 
-    <!-- Maintenance Interval Page -->
+    <!-- Maintenance Interval Page  -->
     <div id="maintenance-interval-page" class="page">
         <h1>Maintenance Plan</h1>
 
@@ -335,6 +338,7 @@
 
         <div class="form-group">
             <select id="calibration-interval" class="value-select">
+                <option value="" disabled selected>Choose interval</option>
                 <option value="6">Every 6 months</option>
                 <option value="12">Every 12 months</option>
                 <option value="other">Other period</option>
@@ -344,6 +348,12 @@
         <div id="custom-interval-container" class="form-group hidden">
             <label for="custom-interval">Custom interval (months)</label>
             <input type="number" id="custom-interval" min="1" max="60" value="3">
+        </div>
+
+        <!-- New due date container -->
+        <div id="due-date-container" class="due-date-container">
+            <p>Next calibration due date:</p>
+            <p id="calibration-due-date" class="date">17 September 2025</p>
         </div>
 
         <div class="button-row">
@@ -457,7 +467,7 @@
             <img src="images/step0.png" alt="Installation Step">
         </div>
 
-        <p class="guide-section-title">Duct Installation Kit 210697 Dimensions</p>
+        <p class="guide-section-image-name">Duct Installation Kit 210697 Dimensions</p>
 
         <p class="guide-content">
             HMT333 and HMT337 humidity and temperature transmitter
@@ -469,6 +479,129 @@
             <button id="probe-mounting-next-btn" class="btn">Next</button>
         </div>
     </div>
+    <!-- Step 1 Page -->
+    <div id="step1-page" class="page">
+        <h1>Step 1</h1>
+
+        <p class="guide-content">
+            Thread the clamping bush, nut, and supporting bar onto the probe cable.
+        </p>
+
+        <div class="guide-image">
+            <img src="images/step1.png" alt="Step 1 Installation">
+        </div>
+
+        <ol class="guide-list">
+            <li>M9×1 thread on probe head</li>
+            <li>Supporting bar</li>
+            <li>Clamping bush</li>
+            <li>Nut</li>
+        </ol>
+
+        <div class="button-row">
+            <button id="step1-back-btn" class="btn btn-secondary">Back</button>
+            <button id="step1-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Step 2 Page -->
+    <div id="step2-page" class="page">
+        <h1>Step 2</h1>
+
+        <p class="guide-content">
+            Thread the hanger to the probe and then thread the supporting bar to the hanger. Fasten the bushing around
+            the cable and the supporting bar.
+        </p>
+
+        <div class="guide-image">
+            <img src="images/step2.png" alt="Step 2 Installation">
+        </div>
+
+        <ol class="guide-list">
+            <li>Hanger</li>
+            <li>Bushing</li>
+        </ol>
+
+        <div class="button-row">
+            <button id="step2-back-btn" class="btn btn-secondary">Back</button>
+            <button id="step2-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Step 3 Page -->
+    <div id="step3-page" class="page">
+        <h1>Step 3</h1>
+
+        <p class="guide-content">
+            Pass the probe through the flange, and thread the nut to the flange.
+        </p>
+
+        <div class="guide-image">
+            <img src="images/step3.png" alt="Step 3 Installation">
+        </div>
+
+        <ol class="guide-list">
+            <li>Flange</li>
+            <li>Clamping bush</li>
+            <li>Bushing</li>
+            <li>Nut</li>
+        </ol>
+
+        <div class="button-row">
+            <button id="step3-back-btn" class="btn btn-secondary">Back</button>
+            <button id="step3-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Step 4 Page -->
+    <div id="step4-page" class="page">
+        <h1>Step 4</h1>
+
+        <p class="guide-content">
+            Fasten the seal to the flange.
+        </p>
+
+        <div class="guide-image">
+            <img src="images/step4.png" alt="Step 4 Installation">
+        </div>
+
+        <ol class="guide-list">
+            <li>Seal</li>
+            <li>Flange</li>
+            <li>Plastic washer, 4 pcs</li>
+            <li>Washer, 4 pcs</li>
+            <li>Screw, 4 pcs</li>
+        </ol>
+
+        <div class="button-row">
+            <button id="step4-back-btn" class="btn btn-secondary">Back</button>
+            <button id="step4-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Step 5-6 Page (Final) -->
+    <div id="step5-6-page" class="page">
+        <h1>Step 5</h1>
+
+        <p class="guide-content">
+            Make a Ø 20 mm hole in the surface of the chamber or duct.
+        </p>
+
+        <h1>Step 6</h1>
+
+        <p class="guide-content">
+            Insert the probe through the hole and fasten the flange using screws and washers.
+        </p>
+
+        <div class="button-row">
+            <button id="step5-6-back-btn" class="btn btn-secondary">Back</button>
+            <button id="step5-6-done-btn" class="btn">Done</button>
+        </div>
+    </div>
+
+
+
+
     <script src="script.js"></script>
     <!-- Bottom Toolbar -->
     <div class="bottom-toolbar">
