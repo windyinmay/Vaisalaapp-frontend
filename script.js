@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const additionalInfo = document.getElementById('additional-info');
     const sensorStatus = document.querySelector('.sensor-status');
     const calibratedPage = document.getElementById('calibrated-page');
+    const maintenancePlanPage = document.getElementById('maintenance-plan-page');
+    const maintenanceBackBtn = document.getElementById('maintenance-back-btn');
+    const maintenanceNextBtn = document.getElementById('maintenance-next-btn');
+    const maintenanceOptions = document.querySelectorAll('input[name="maintenance-option"]');
+    const maintenanceIntervalPage = document.getElementById('maintenance-interval-page');
+    const intervalBackBtn = document.getElementById('interval-back-btn');
+    const intervalNextBtn = document.getElementById('interval-next-btn');
+    const calibrationInterval = document.getElementById('calibration-interval');
+    const customIntervalContainer = document.getElementById('custom-interval-container');
+    const maintenanceCompletePage = document.getElementById('maintenance-complete-page');
+    const completeBackBtn = document.getElementById('complete-back-btn');
+    const finishBtn = document.getElementById('finish-btn');
 
     if (backButton) {
         backButton.addEventListener('click', function () {
@@ -194,7 +206,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const progressBarContainer = document.getElementById('progress-bar-container');
 
         // Pages that should show the progress bar
-        const progressBarPages = ['configuration-page', 'calibration-page', 'calibration-options-page', 'calibration-input-page', 'calibrated-page'];
+        const progressBarPages = ['configuration-page', 'calibration-page', 'calibration-options-page', 'calibration-input-page', 'calibrated-page',
+            'maintenance-plan-page', 'maintenance-interval-page',
+            'maintenance-complete-page'];
 
         // Show/hide progress bar based on current page
         if (progressBarPages.includes(pageId)) {
@@ -245,6 +259,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Third step - disabled (grey, no current class)
                 document.getElementById('step-maintain').classList.remove('current');
                 // We don't add 'completed' to the third step as it's disabled
+            } else if (pageId === 'maintenance-plan-page' || pageId === 'maintenance-interval-page') {//|| pageId === 'maintenance-complete-page'
+                // First step - completed with check mark
+                document.getElementById('step-config').classList.remove('current');
+                document.getElementById('step-config').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - completed with check mark
+                document.getElementById('step-calibrate').classList.remove('current');
+                document.getElementById('step-calibrate').classList.add('completed');
+
+                // Second line - completed
+                document.getElementById('line-2').classList.add('completed');
+
+                // Third step - current with dot
+                document.getElementById('step-maintain').classList.add('current');
+            } else {
+                // First step - completed with check mark
+                document.getElementById('step-config').classList.remove('current');
+                document.getElementById('step-config').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - completed with check mark
+                document.getElementById('step-calibrate').classList.remove('current');
+                document.getElementById('step-calibrate').classList.add('completed');
+
+                // Second line - completed
+                document.getElementById('line-2').classList.add('completed');
+
+                // Third step - completed
+                document.getElementById('step-maintain').classList.remove('current');
+                document.getElementById('step-maintain').classList.add('completed');
+
             }
             document.getElementById(pageId).style.paddingTop = "calc(60px + 0.5cm)";
 
@@ -289,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     showPage('calibration-input-page');
                 } else {
                     // If "Already calibrated" is selected, maybe skip to a different page
-                    showPage('welcome-page');
+                    showPage('maintenance-plan-page');
                 }
             } else {
                 // If nothing is selected, you might want to show a message
@@ -361,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const calibratedNextBtn = document.getElementById('calibrated-next-btn');
     if (calibratedNextBtn) {
         calibratedNextBtn.addEventListener('click', function () {
-            showPage('welcome-page');
+            showPage('maintenance-plan-page');
         });
     }
 
@@ -463,4 +513,86 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    if (maintenanceBackBtn) {
+        maintenanceBackBtn.addEventListener('click', function () {
+            showPage('calibrated-page');
+        });
+    }
+
+    if (maintenanceNextBtn) {
+        maintenanceNextBtn.addEventListener('click', function () {
+            const selectedOption = document.querySelector('input[name="maintenance-option"]:checked');
+            if (selectedOption) {
+                if (selectedOption.value === 'setup-maintenance') {
+                    showPage('maintenance-interval-page');
+                } else {
+                    // Skip to welcome or completion
+                    showPage('maintenance-complete-page');
+                }
+            } else {
+                // If nothing is selected, you might want to show a message
+                alert('Please select an option');
+            }
+        });
+    }
+
+    // Add event listeners for maintenance options styling
+    if (maintenanceOptions) {
+        maintenanceOptions.forEach(radio => {
+            radio.addEventListener('change', function () {
+                // Remove selected class from all options
+                document.querySelectorAll('.radio-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // Add selected class to the parent of the checked radio
+                if (this.checked) {
+                    this.closest('.radio-option').classList.add('selected');
+                }
+            });
+        });
+    }
+
+    // Add event listeners for interval page
+    if (intervalBackBtn) {
+        intervalBackBtn.addEventListener('click', function () {
+            showPage('maintenance-plan-page');
+        });
+    }
+
+    if (intervalNextBtn) {
+        intervalNextBtn.addEventListener('click', function () {
+            showPage('maintenance-complete-page');
+        });
+    }
+
+    // Handle custom interval selection
+    if (calibrationInterval) {
+        calibrationInterval.addEventListener('change', function () {
+            if (this.value === 'other') {
+                customIntervalContainer.classList.remove('hidden');
+            } else {
+                customIntervalContainer.classList.add('hidden');
+            }
+        });
+    }
+
+    // Add event listeners for maintenance complete page
+    if (completeBackBtn) {
+        completeBackBtn.addEventListener('click', function () {
+            const selectedOption = document.querySelector('input[name="maintenance-option"]:checked');
+            if (selectedOption && selectedOption.value === 'setup-maintenance') {
+                showPage('maintenance-interval-page');
+            } else {
+                showPage('maintenance-plan-page');
+            }
+        });
+    }
+
+    if (finishBtn) {
+        finishBtn.addEventListener('click', function () {
+            showPage('welcome-page');
+        });
+    }
+
 });

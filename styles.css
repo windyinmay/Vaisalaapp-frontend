@@ -1,6 +1,5 @@
 /* Color Variables - #0D374F dark blue, #3F645E dark mint, #72A2AB light mint, #186795 dark blue lighter */
 
-/* Base Styles */
 body {
     font-family: Arial, sans-serif;
     max-width: 400px;
@@ -10,7 +9,6 @@ body {
     padding-bottom: 60px;
 }
 
-/* Typography */
 h1 {
     font-size: 24px;
     margin-top: 30px;
@@ -44,6 +42,10 @@ p {
 .page:not(#welcome-page) {
     padding-top: 60px;
     box-sizing: border-box;
+}
+
+.page.with-progress-bar {
+    padding-top: calc(60px + 0.5cm) !important;
 }
 
 /* Form Elements */
@@ -84,6 +86,11 @@ p {
     background-color: #186795;
 }
 
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 .btn-secondary {
     background-color: #e0e0e0;
     color: #333;
@@ -93,13 +100,15 @@ p {
     background-color: #d0d0d0;
 }
 
+h1.ready-to-scan0 {
+    margin-top: 20px;
+}
+
 /* NFC Status */
 #nfc-status {
     padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
+    margin: 10px 2px;
     text-align: center;
-    background-color: #f5f5f5;
     font-size: 16px;
 }
 
@@ -108,7 +117,6 @@ p {
     margin: 10px 0;
     border-radius: 4px;
     text-align: center;
-
     font-size: 22px;
 }
 
@@ -179,13 +187,11 @@ p {
 
 .nfc-image img {
     width: 80%;
-
     object-fit: contain;
 }
 
 .scan-complete img {
     width: 80%;
-
     object-fit: contain;
     display: block;
     margin-left: auto;
@@ -194,7 +200,6 @@ p {
 
 .ready-to-scan img {
     width: 50%;
-
     object-fit: contain;
     display: block;
     margin-left: auto;
@@ -429,6 +434,16 @@ body:not(.at-welcome-page) .top-toolbar {
     vertical-align: middle;
 }
 
+.status-dot-red {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #F44336;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
 #device_name {
     margin: 0 0 5px 0;
     font-weight: bold;
@@ -476,7 +491,7 @@ body:not(.at-welcome-page) .top-toolbar {
     padding: 15px;
     font-size: 16px;
     position: fixed;
-    bottom: 150px;
+    bottom: 130px;
     left: 20px;
     background-color: #ff9800;
 }
@@ -541,8 +556,6 @@ body:not(.at-welcome-page) .top-toolbar {
     /* Add fixed width */
 }
 
-
-
 .progress-step.completed .step-circle {
     background-color: #0D374F;
     border-color: #0D374F;
@@ -589,8 +602,44 @@ body:not(.at-welcome-page) .top-toolbar {
     background-color: #0D374F;
 }
 
-.page.with-progress-bar {
-    padding-top: calc(60px + 0.5cm) !important;
+/* Hide the dot when step is completed */
+.progress-step.completed .step-dot {
+    display: none;
+}
+
+/* Make sure the step circle has correct sizing and alignment for the check mark */
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
+/* Make sure step dot is visible only in current step */
+.progress-step .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #0D374F;
+    display: none;
+}
+
+.progress-step.current .step-dot {
+    display: block;
+}
+
+/* Check mark for completed steps */
+.progress-step.completed .step-circle::after {
+    content: "\2713";
+    /* Unicode check mark */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* Media Queries */
@@ -744,48 +793,6 @@ body.at-calibration-page #step-config.current .step-label {
     font-weight: bold;
 }
 
-
-
-/* Hide the dot when step is completed */
-.progress-step.completed .step-dot {
-    display: none;
-}
-
-/* Make sure the step circle has correct sizing and alignment for the check mark */
-.step-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    margin-bottom: 5px;
-}
-
-/* Make sure step dot is visible only in current step */
-.progress-step .step-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #0D374F;
-    display: none;
-}
-
-.progress-step.current .step-dot {
-    display: block;
-}
-
-/* Check mark for completed steps */
-.progress-step.completed .step-circle::after {
-    content: "\2713";
-    /* Unicode check mark */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-}
-
 /* Calibration Options Page Styles */
 .radio-options-container {
     margin: 30px 0 60px;
@@ -850,16 +857,11 @@ body.at-calibration-page #step-config.current .step-label {
     transform: translate(-50%, -50%);
 }
 
-/* Calibration Input Page Styles */
-
-
 .see-more {
     color: #0D374F;
     font-weight: bold;
     cursor: pointer;
 }
-
-
 
 .hidden {
     display: none;
@@ -867,16 +869,10 @@ body.at-calibration-page #step-config.current .step-label {
 
 .sensor-status {
     text-align: left;
-}
-
-.status-dot-red {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #F44336;
-    border-radius: 50%;
-    margin-right: 5px;
-    vertical-align: middle;
+    padding: 1px 1px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid transparent;
 }
 
 .reference-input-container {
@@ -896,8 +892,6 @@ body.at-calibration-page #step-config.current .step-label {
     margin-bottom: 8px;
 }
 
-
-
 .reference-input-row input {
     flex: 1;
     height: 38px;
@@ -914,7 +908,7 @@ body.at-calibration-page #step-config.current .step-label {
 .reference-input-row select {
     width: 120px;
     height: 38px;
-    padding: 6 px 8px;
+    padding: 6px 8px;
     border: 1px solid #ccc;
     border-left: none;
     border-radius: 0 8px 8px 0;
@@ -945,13 +939,7 @@ body.at-calibration-page #step-config.current .step-label {
     text-align: left;
 }
 
-/* Disabled button styling */
-.btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* Update the info-container CSS */
+/* Info container */
 .info-container {
     background-color: #f5f5f5;
     border-radius: 8px;
@@ -973,6 +961,7 @@ body.at-calibration-page #step-config.current .step-label {
     font-weight: normal;
 }
 
+/* Input validation */
 .invalid-input {
     border: 2px solid #ff3860 !important;
     background-color: rgba(255, 56, 96, 0.1);
@@ -985,10 +974,6 @@ body.at-calibration-page #step-config.current .step-label {
     margin-left: 4px;
 }
 
-.invalid-input {
-    border: 2px solid #ff3860 !important;
-}
-
 .validation-message {
     color: #ff3860;
     background-color: rgba(255, 56, 96, 0.1);
@@ -998,79 +983,6 @@ body.at-calibration-page #step-config.current .step-label {
     margin-bottom: 15px;
     font-size: 14px;
     display: none;
-}
-
-/* Add these styles to the existing CSS file */
-/* Flare animation for sensor status */
-@keyframes statusFlare {
-    0% {
-        border-color: #FF9900;
-        background-color: rgba(255, 153, 0, 0.1);
-    }
-
-    50% {
-        border-color: #FF5500;
-        background-color: rgba(255, 153, 0, 0.2);
-    }
-
-    100% {
-        border-color: #FF9900;
-        background-color: rgba(255, 153, 0, 0.1);
-    }
-}
-
-
-
-/* Reconnect button styling */
-.reconnect-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 14px;
-    display: block;
-    width: 100%;
-}
-
-.reconnect-btn:hover {
-    background-color: #45a049;
-}
-
-/* Add these styles to your existing CSS file */
-
-/* Flare animation for sensor status */
-@keyframes statusFlare {
-    0% {
-        border-color: #FF9900;
-        background-color: rgba(255, 153, 0, 0.1);
-    }
-
-    50% {
-        border-color: #FF5500;
-        background-color: rgba(255, 153, 0, 0.2);
-    }
-
-    100% {
-        border-color: #FF9900;
-        background-color: rgba(255, 153, 0, 0.1);
-    }
-}
-
-.sensor-status {
-    padding: 1px 1px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid transparent;
-}
-
-.sensor-status.flare {
-    border: 2px solid #FF9900;
-    background-color: rgba(255, 153, 0, 0.1);
-    animation: statusFlare 1.3s ease-in-out 3;
-    font-weight: bold;
 }
 
 /* Reconnect button styling */
@@ -1094,7 +1006,7 @@ body.at-calibration-page #step-config.current .step-label {
     background-color: #F57C00;
 }
 
-/* Styles for the Calibrated page */
+/* Success styles */
 .success-icon {
     text-align: center;
     margin: 40px 0;
@@ -1103,12 +1015,6 @@ body.at-calibration-page #step-config.current .step-label {
 .success-icon i {
     font-size: 80px;
     color: #4CAF50;
-}
-
-/* Disable style for the maintain step in progress bar */
-#step-maintain .step-circle {
-    background-color: #f0f0f0;
-    border-color: #ccc;
 }
 
 #step-maintain .step-label {
@@ -1123,7 +1029,6 @@ body.at-calibration-page #step-config.current .step-label {
 #calibrated-page .success-icon {
     text-align: center;
     margin: 60px auto;
-
 }
 
 #calibrated-page .success-icon i {
@@ -1139,4 +1044,55 @@ body.at-calibration-page #step-config.current .step-label {
     line-height: 1.3;
     margin-top: 100px;
     padding-top: 15px;
+}
+
+/* Maintenance Plan Page Styles */
+#maintenance-plan-page .radio-options-container,
+#maintenance-interval-page .form-group {
+    margin: 30px 0 60px;
+}
+
+#maintenance-interval-page .form-group {
+    margin-bottom: 20px;
+}
+
+#maintenance-interval-page .value-select {
+    width: 100%;
+}
+
+#maintenance-complete-page .centered-content {
+    text-align: center;
+    margin-top: 100px;
+}
+
+#maintenance-complete-page .success-icon {
+    text-align: center;
+    margin: 60px auto;
+}
+
+#maintenance-complete-page .success-icon i {
+    font-size: 100px;
+    color: #4CAF50;
+}
+
+#maintenance-complete-page h1 {
+    text-align: center;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.3;
+    padding-top: 15px;
+}
+
+#custom-interval-container.hidden {
+    display: none;
+}
+
+#custom-interval-container input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    height: 45px;
+    width: 100%;
 }

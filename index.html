@@ -41,7 +41,7 @@
                 <div class="step-circle">
                     <span class="step-dot"></span>
                 </div>
-                <span class="step-label">Maintain</span>
+                <span class="step-label">Plan</span>
             </div>
         </div>
     </div>
@@ -93,6 +93,7 @@
     <!-- Login Page -->
     <div id="login-page" class="page">
         <h1>Login</h1>
+        <p>Enter username and password sent to your email</p>
         <form id="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -108,9 +109,9 @@
     <!-- NFC Information Page -->
     <div id="nfc-info-page" class="page">
         <h1>NFC</h1>
-        <p>Phone can be connected</p>
+        <p>Phone can be connected to the sensor via NFC (Near Field Communication).</p>
         <div class="nfc-image pre-nfc">
-            <img src="images/pre-nfcc.png" alt="NFC Connection">
+            <img src="images/pre-nfcc2.png" alt="NFC Connection">
         </div>
         <p>NFC is short range (several cm) and phone does NOT stay connected to the sensor, so you have to reconnect if
             you get disconnected.</p>
@@ -118,16 +119,16 @@
     </div>
     <!-- Scan NFC Page -->
     <div id="scan-page" class="page">
-        <h1>Ready to scan</h1>
+        <h1 class="ready-to-scan0">Ready to scan</h1>
         <div class="nfc-icon">
             <div class="nfc-wave"></div>
             <div class="nfc-wave"></div>
             <div class="nfc-wave"></div>
         </div>
         <div class="ready-to-scan">
-            <img src="images/ready-to-scan.png" alt="NFC">
+            <img src="images/ready-to-scan2.png" alt="NFC">
         </div>
-        <p id="nfc-status">Bring phone closer and move it around until the scan is complete</p>
+        <p id="nfc-status">Bring phone very close to the sensor and move it around until they connect</p>
 
         <!-- <i class="ph-bold ph-scan"></i>   <button id="start-scan-btn" class="btn">Start Scanning</button>-->
         <button id="start-scan-btn" class="btn">
@@ -138,11 +139,12 @@
 
     <!-- Connected Page -->
     <div id="connected-page" class="page">
-        <p><span class="status-dot"></span>Connected to sensor</p>
+
         <h1>Scan complete</h1>
+        <!--<p><span class="status-dot"></span>Connected to sensor</p>-->
 
         <div class="scan-complete">
-            <img src="images/scan-complete.png" alt="scan complete">
+            <img src="images/scan-complete2.png" alt="scan complete">
         </div>
         <p id="scanComplete">Sensor HMD90 connected</p>
         <p>NFC tag ID: <span id="device-id">--</span></p>
@@ -178,7 +180,7 @@
     <!-- Calibration Page -->
     <div id="calibration-page" class="page">
         <h1>Current values</h1>
-        <p>Values for the last 24 hours can be viewed here</p>
+        <p>Values for the last 48 hours can be viewed here</p>
 
         <div class="calibration-container">
             <div class="value-group">
@@ -196,7 +198,7 @@
         </div>
 
         <div class="chart-container">
-            <img src="images/chart.png" alt="Chart" class="chart-image">
+            <img src="images/chart2.png" alt="Chart" class="chart-image">
         </div>
 
         <div class="button-row">
@@ -286,7 +288,67 @@
             <button id="calibrated-next-btn" class="btn">Next</button>
         </div>
     </div>
+    <!-- Maintenance Plan Options Page -->
+    <div id="maintenance-plan-page" class="page">
+        <h1>Maintenance Plan</h1>
 
+        <div class="radio-options-container">
+            <div class="radio-option">
+                <input type="radio" id="setup-maintenance-option" name="maintenance-option" value="setup-maintenance">
+                <label for="setup-maintenance-option">Set up maintenance plan</label>
+            </div>
+
+            <div class="radio-option">
+                <input type="radio" id="skip-maintenance-option" name="maintenance-option" value="skip-maintenance">
+                <label for="skip-maintenance-option">Skip maintenance plan</label>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="maintenance-back-btn" class="btn btn-secondary">Back</button>
+            <button id="maintenance-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Maintenance Interval Page -->
+    <div id="maintenance-interval-page" class="page">
+        <h1>Maintenance Plan</h1>
+
+        <p id="maintenance-1">Set up calibration interval</p>
+        <p id="maintenance-2">Get the calibration interval from documentation</p>
+
+        <div class="form-group">
+            <select id="calibration-interval" class="value-select">
+                <option value="6">Every 6 months</option>
+                <option value="12">Every 12 months</option>
+                <option value="other">Other period</option>
+            </select>
+        </div>
+
+        <div id="custom-interval-container" class="form-group hidden">
+            <label for="custom-interval">Custom interval (months)</label>
+            <input type="number" id="custom-interval" min="1" max="60" value="3">
+        </div>
+
+        <div class="button-row">
+            <button id="interval-back-btn" class="btn btn-secondary">Back</button>
+            <button id="interval-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+    <!-- Maintenance Complete Page -->
+    <div id="maintenance-complete-page" class="page">
+        <div class="centered-content">
+            <h1>The sensor has been set up</h1>
+            <div class="success-icon">
+                <i class="ph-bold ph-check-circle"></i>
+            </div>
+        </div>
+        <div class="button-row">
+            <button id="complete-back-btn" class="btn btn-secondary">Back</button>
+            <button id="finish-btn" class="btn">To main page</button>
+        </div>
+    </div>
 
 
 
