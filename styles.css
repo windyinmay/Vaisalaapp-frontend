@@ -821,6 +821,7 @@ body.at-calibration-page #step-config.current .step-label {
 .radio-option label {
     font-size: 16px;
     cursor: pointer;
+    display: block;
 }
 
 /* Selected radio option styling */
@@ -855,6 +856,17 @@ body.at-calibration-page #step-config.current .step-label {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+/* Increase the clickable area for mobile users */
+@media (max-width: 768px) {
+    .radio-option {
+        cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+        margin-right: 15px;
+    }
 }
 
 .see-more {
@@ -1095,4 +1107,166 @@ body.at-calibration-page #step-config.current .step-label {
     font-size: 16px;
     height: 45px;
     width: 100%;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    border: 1px solid #ddd;
+    /* Thin light grey border */
+    box-sizing: border-box;
+    /* Ensure border is included in element dimensions */
+}
+
+/* Make sure the gallery items themselves have proper spacing */
+.gallery-item {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+    margin-right: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 80%;
+    box-sizing: border-box;
+    padding-right: 0;
+    /* Ensure no right padding is interfering */
+}
+
+/* Fix for the last gallery item to ensure it has all borders */
+.gallery-item:last-child {
+    margin-right: 0;
+    padding-right: 0;
+    border-right-width: 1px;
+    /* Explicitly set right border width */
+}
+
+/* Optional: Add a subtle hover effect */
+.gallery-item img:hover {
+    border-color: #0D374F;
+    /* Change border color on hover to match theme color */
+}
+
+/*''''''''''''''''''''''*/
+/* instructions*/
+/* Instructions Page Styles */
+.search-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.search-filters {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.results-count {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.result-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.result-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #2a5885;
+    margin-bottom: 5px;
+}
+
+.result-description {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.result-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #777;
+}
+
+.result-type {
+    padding: 2px 6px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+/* Installation Guide and Probe Mounting Pages Styles */
+#installation-guide-page,
+#probe-mounting-page {
+    padding: 20px;
+}
+
+.guide-section-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.guide-content {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.guide-image {
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.guide-image img {
+    max-width: 100%;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

@@ -46,6 +46,52 @@ document.addEventListener('DOMContentLoaded', function () {
     const maintenanceCompletePage = document.getElementById('maintenance-complete-page');
     const completeBackBtn = document.getElementById('complete-back-btn');
     const finishBtn = document.getElementById('finish-btn');
+    const instructionsPage = document.getElementById('instructions-page');
+    const instructionsBackBtn = document.getElementById('instructions-back-btn');
+    const mainMenu3Btn = document.getElementById('mainmenu3'); // Instructions button in welcome page
+    const instructionsToolbarBtn = document.querySelector('.toolbar-item:nth-child(2)'); // Instructions in toolbar
+    const installationGuidePage = document.getElementById('installation-guide-page');
+    const installationGuideBackBtn = document.getElementById('installation-guide-back-btn');
+    const installationGuideNextBtn = document.getElementById('installation-guide-next-btn');
+
+    const probeMountingPage = document.getElementById('probe-mounting-page');
+    const probeMountingBackBtn = document.getElementById('probe-mounting-back-btn');
+    const probeMountingNextBtn = document.getElementById('probe-mounting-next-btn');
+
+
+    let currentFlow = 'setup'; // Default flow is 'setup', alternative is 'calibration'
+
+    // Function to set app flow and update UI accordingly
+    function setAppFlow(flow) {
+        currentFlow = flow;
+
+        // Update toolbar text based on flow
+        if (backButton) {
+            const backButtonText = backButton.querySelector('span');
+            if (backButtonText) {
+                backButtonText.textContent = flow === 'setup' ? 'Set up new sensor' : 'Calibrate existing sensor';
+            }
+        }
+
+        // Update content visibility based on flow
+        document.querySelectorAll('.flow-text').forEach(element => {
+            if (element.classList.contains(flow + '-flow')) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        });
+
+        // Update image galleries based on flow
+        document.querySelectorAll('.image-gallery').forEach(gallery => {
+            if (gallery.classList.contains(flow + '-flow')) {
+                gallery.style.display = 'flex';
+            } else {
+                gallery.style.display = 'none';
+            }
+        });
+    }
+
 
     if (backButton) {
         backButton.addEventListener('click', function () {
@@ -60,7 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.classList.remove('at-welcome-page');
     }
 
-    // Update the showPage function to manage the body class
+
+    // NFC Info page next button
+    if (nfcNextBtn) {
+        nfcNextBtn.addEventListener('click', function () {
+            showPage('scan-page');
+        });
+    }
+
+
     function showPage(pageId) {
         // Hide all pages by removing active class
         document.querySelectorAll('.page').forEach(page => {
@@ -79,15 +133,24 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             document.body.classList.remove('at-welcome-page');
         }
+
+        // Update top toolbar text based on current page
+        if (pageId === 'instructions-page' || pageId === 'installation-guide-page' || pageId === 'probe-mounting-page') {
+            // For instructions and related pages, show "Instructions"
+            const backButtonText = document.querySelector('.back-button span');
+            if (backButtonText) {
+                backButtonText.textContent = 'Instructions';
+            }
+        } else if (pageId !== 'welcome-page') {
+            // For other pages, update based on the current flow
+            const backButtonText = document.querySelector('.back-button span');
+            if (backButtonText) {
+                backButtonText.textContent = currentFlow === 'setup' ? 'Set up new sensor' : 'Calibrate existing sensor';
+            }
+        }
+
         updateProgressBar(pageId);
     }
-    // NFC Info page next button
-    if (nfcNextBtn) {
-        nfcNextBtn.addEventListener('click', function () {
-            showPage('scan-page');
-        });
-    }
-
     // Modify the login form submission handler
     if (loginForm) {
         loginForm.addEventListener('submit', function (event) {
@@ -96,16 +159,21 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         });
     }
-    // Set up event listeners for welcome page buttons
+
     if (mainMenuBtns) {
-        mainMenuBtns.forEach((btn, index) => {
+        mainMenuBtns.forEach((btn) => {
             btn.addEventListener('click', function () {
-                if (index === 0) { // "Set up new sensor"
+                const flowType = this.getAttribute('data-flow');
+                if (flowType) {
+                    setAppFlow(flowType);
+                }
+
+                if (this.id === 'mainmenu1') { // "Set up new sensor"
                     showPage('app-overview-page');
-                } else if (index === 1) { // "Calibrate existing sensor"
-                    showPage('login-page');
-                } else if (index === 2) { // "Instructions"
+                } else if (this.id === 'mainmenu2') { // "Calibrate existing sensor"
                     showPage('app-overview-page');
+                } else if (this.id === 'mainmenu3') { // "Instructions"
+                    showPage('instructions-page');
                 }
             });
         });
@@ -411,7 +479,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const calibratedNextBtn = document.getElementById('calibrated-next-btn');
     if (calibratedNextBtn) {
         calibratedNextBtn.addEventListener('click', function () {
-            showPage('maintenance-plan-page');
+            // Only go to maintenance plan for setup flow
+            if (currentFlow === 'setup') {
+                showPage('maintenance-plan-page');
+            } else {
+                // For calibration flow, skip to main page
+                showPage('welcome-page');
+            }
         });
     }
 
@@ -594,5 +668,98 @@ document.addEventListener('DOMContentLoaded', function () {
             showPage('welcome-page');
         });
     }
+
+    // If mainmenu3 button exists (Instructions from welcome page)
+    if (mainMenu3Btn) {
+        mainMenu3Btn.addEventListener('click', function () {
+            showPage('instructions-page');
+        });
+    }
+
+    // If instructions toolbar button exists
+    if (instructionsToolbarBtn) {
+        instructionsToolbarBtn.addEventListener('click', function () {
+            showPage('instructions-page');
+        });
+    }
+
+    // Instructions page back button
+    if (instructionsBackBtn) {
+        instructionsBackBtn.addEventListener('click', function () {
+            // Go back to welcome page or previous page
+            showPage('welcome-page');
+        });
+    }
+
+    const resultItems = document.querySelectorAll('.result-item');
+    if (resultItems) {
+        resultItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const title = this.querySelector('.result-title').textContent;
+
+            });
+        });
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            // For demo purposes only - in a real app, this would filter results
+            const resultsCount = document.querySelector('.results-count');
+
+            // Simple demo of dynamic results count based on search
+            if (this.value.length > 0) {
+                const count = Math.max(1, Math.min(50, this.value.length * 10));
+                resultsCount.textContent = `${count} results`;
+            } else {
+                resultsCount.textContent = '0 results';
+            }
+        });
+    }
+    if (resultItems && resultItems.length > 0) {
+        // First result item (210697 Installation Guide)
+        resultItems[0].addEventListener('click', function () {
+            showPage('installation-guide-page');
+        });
+
+        // Third result item (Probe Mounting)
+        if (resultItems.length > 2) {
+            resultItems[2].addEventListener('click', function () {
+                showPage('probe-mounting-page');
+            });
+        }
+    }
+
+    // Installation Guide back button
+    if (installationGuideBackBtn) {
+        installationGuideBackBtn.addEventListener('click', function () {
+            showPage('instructions-page');
+        });
+    }
+
+    // Installation Guide next button
+    if (installationGuideNextBtn) {
+        installationGuideNextBtn.addEventListener('click', function () {
+            showPage('probe-mounting-page');
+        });
+    }
+
+    // Probe Mounting back button
+    if (probeMountingBackBtn) {
+        probeMountingBackBtn.addEventListener('click', function () {
+            showPage('installation-guide-page');
+        });
+    }
+
+    // Probe Mounting next button
+    if (probeMountingNextBtn) {
+        probeMountingNextBtn.addEventListener('click', function () {
+            // Navigate to the next page or back to instructions
+            showPage('instructions-page');
+        });
+    }
+
+
 
 });

@@ -50,10 +50,11 @@
         <h1>Welcome</h1>
 
         <div class="button-group">
-            <button id="mainmenu1" class="btn"><i class="ph-bold ph-clipboard"></i>Set up new sensor</button>
-            <button id="mainmenu2" class="btn"><i class="ph-bold ph-clipboard"></i>Calibrate existing sensor</button>
+            <button id="mainmenu1" class="btn" data-flow="setup"><i class="ph-bold ph-clipboard"></i>Set up new
+                sensor</button>
+            <button id="mainmenu2" class="btn" data-flow="calibration"><i class="ph-bold ph-clipboard"></i>Calibrate
+                existing sensor</button>
             <button id="mainmenu3" class="btn"><i class="ph-bold ph-clipboard-text"></i>Instructions</button>
-
         </div>
     </div>
 
@@ -61,12 +62,14 @@
     <div id="app-overview-page" class="page">
         <h1>App Overview</h1>
         <div class="instructions-content">
+            <p class="flow-text setup-flow">Installation instructions and troubleshooting can be found from the bottom
+                toolbar. Here is a quick guide</p>
+            <p class="flow-text calibration-flow" style="display:none">Calibration instructions and troubleshooting can
+                be found from the bottom toolbar. Here is a quick guide</p>
 
-            <p>Installation instructions and troubleshooting can be found from the bottom toolbar. Here is a quick guide
-            </p>
             <!-- Image Gallery -->
             <div class="image-gallery-container">
-                <div class="image-gallery">
+                <div class="image-gallery setup-flow">
                     <div class="gallery-item">
                         <img src="images/new1.png" alt="New 1">
                         <p class="gallery-caption">Physically install the sensor</p>
@@ -84,8 +87,25 @@
                         <p class="gallery-caption">Calibration complete</p>
                     </div>
                 </div>
+                <div class="image-gallery calibration-flow" style="display:none">
+                    <div class="gallery-item">
+                        <img src="images/existing1.png" alt="Calibration 1">
+                        <p class="gallery-caption">Locate sensors using maintenance plan</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/new2.png" alt="Calibration 2">
+                        <p class="gallery-caption">Hold reference device</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/new3.png" alt="Calibration 3">
+                        <p class="gallery-caption">Update values in the app</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/new4.png" alt="Calibration 4">
+                        <p class="gallery-caption">Calibration complete</p>
+                    </div>
+                </div>
             </div>
-
         </div>
         <button id="skip-instructions-btn" class="btn">Skip Instructions</button>
     </div>
@@ -130,7 +150,6 @@
         </div>
         <p id="nfc-status">Bring phone very close to the sensor and move it around until they connect</p>
 
-        <!-- <i class="ph-bold ph-scan"></i>   <button id="start-scan-btn" class="btn">Start Scanning</button>-->
         <button id="start-scan-btn" class="btn">
             Start Scanning
         </button>
@@ -139,10 +158,7 @@
 
     <!-- Connected Page -->
     <div id="connected-page" class="page">
-
         <h1>Scan complete</h1>
-        <!--<p><span class="status-dot"></span>Connected to sensor</p>-->
-
         <div class="scan-complete">
             <img src="images/scan-complete2.png" alt="scan complete">
         </div>
@@ -245,7 +261,6 @@
 
         <h2>Reference values</h2>
 
-        <!-- Replace the reference-input-container content -->
         <div class="reference-input-container">
             <div class="reference-input-row">
                 <label for="temperature-input">Temperature</label>
@@ -272,13 +287,14 @@
 
         <div class="button-row">
             <button id="calibration-input-back-btn" class="btn btn-secondary">Back</button>
-            <button id="calibration-input-next-btn" class="btn" disabled>Next</button>
+            <button id="calibration-input-next-btn" class="btn" disabled>Calibrate</button>
         </div>
     </div>
     <!-- Calibrated Page -->
     <div id="calibrated-page" class="page">
         <div class="centered-content">
-            <h1>The new sensor has been set up</h1>
+            <h1 class="flow-text setup-flow">The new sensor has been set up</h1>
+            <h1 class="flow-text calibration-flow" style="display:none">Sensor calibration is complete</h1>
             <div class="success-icon">
                 <i class="ph-bold ph-check-circle"></i>
             </div>
@@ -339,7 +355,8 @@
     <!-- Maintenance Complete Page -->
     <div id="maintenance-complete-page" class="page">
         <div class="centered-content">
-            <h1>The sensor has been set up</h1>
+            <h1 class="flow-text setup-flow">The sensor has been set up</h1>
+            <h1 class="flow-text calibration-flow" style="display:none">Calibration and maintenance plan complete</h1>
             <div class="success-icon">
                 <i class="ph-bold ph-check-circle"></i>
             </div>
@@ -350,10 +367,108 @@
         </div>
     </div>
 
+    <!-- Instructions Page -->
+    <div id="instructions-page" class="page">
+        <h1>Instructions</h1>
+
+        <div class="search-container">
+            <input type="text" id="search-input" value="210697" placeholder="Search for instructions...">
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label for="language-filter">Language:</label>
+                    <select id="language-filter">
+                        <option value="english">English</option>
+                        <option value="spanish">Español</option>
+                        <option value="french">Français</option>
+                        <option value="german">Deutsch</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sort-filter">Sort by:</label>
+                    <select id="sort-filter">
+                        <option value="relevance">Relevance</option>
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <p class="results-count">32 results</p>
+
+        <div class="search-results">
+            <div class="result-item">
+                <div class="result-title">210697 Installation Guide</div>
+                <div class="result-meta">
+                    <span class="result-type">HMP3, HMP7...</span>
+                    <span class="result-type">User guide.</span>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-title">Overview</div>
+                <div class="result-description">Duct installation kit</div>
+                <div class="result-meta">
+                    <span class="result-type">HMP3, HMP7...</span>
+                    <span class="result-type">User guide</span>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-title">Probe Mounting Using the Duct Installation Kit</div>
+                <div class="result-meta">
+                    <span class="result-type">HMP3, HMP7...</span>
+                    <span class="result-type">User guide</span>
+                </div>
+            </div>
+        </div>
 
 
+    </div>
 
+    <!-- Installation Guide Page -->
+    <div id="installation-guide-page" class="page">
+        <h1>210697 Installation Guide</h1>
 
+        <p class="guide-section-title">Overview</p>
+
+        <p class="guide-content">
+            Duct Installation Kit (Vaisala item 210697) is designed to support the probe head of a cabled probe so
+            it can be installed to a chamber or duct. The kit is compatible with Vaisala probes that have a M9×1
+            body thread at the rear of the probe head. For example, the following products are compatible:
+            HMT333 and HMT337 humidity and temperature transmitter
+            HMP3 and HMP7 humidity and temperature probe
+        </p>
+
+        <div class="button-row">
+            <button id="installation-guide-back-btn" class="btn btn-secondary">Back</button>
+            <button id="installation-guide-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+    <!-- Probe Mounting Page -->
+    <div id="probe-mounting-page" class="page">
+        <h1>Probe Mounting Using the Duct Installation Kit</h1>
+
+        <p class="guide-content">
+            Thread the clamping bush, nut, and supporting bar onto the probe cable.
+        </p>
+
+        <div class="guide-image">
+            <img src="images/step0.png" alt="Installation Step">
+        </div>
+
+        <p class="guide-section-title">Duct Installation Kit 210697 Dimensions</p>
+
+        <p class="guide-content">
+            HMT333 and HMT337 humidity and temperature transmitter
+            HMP3 and HMP7 humidity and temperature probe
+        </p>
+
+        <div class="button-row">
+            <button id="probe-mounting-back-btn" class="btn btn-secondary">Back</button>
+            <button id="probe-mounting-next-btn" class="btn">Next</button>
+        </div>
+    </div>
     <script src="script.js"></script>
     <!-- Bottom Toolbar -->
     <div class="bottom-toolbar">
