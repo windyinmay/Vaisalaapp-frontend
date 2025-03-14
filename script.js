@@ -32,25 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const humidityInput = document.getElementById('humidity-input');
     const calibrationInfo = document.getElementById('calibration-info');
     const additionalInfo = document.getElementById('additional-info');
-
-
+    const sensorStatus = document.querySelector('.sensor-status');
+    const calibratedPage = document.getElementById('calibrated-page');
 
     if (backButton) {
         backButton.addEventListener('click', function () {
             showPage('welcome-page');
         });
     }
-
-
-
-
-    // Call this function when changing pages
-    //const originalShowPage = window.showPage || function () { };
-    //window.showPage = function (pageId) {
-    //    originalShowPage(pageId);
-    //    updateTopToolbarText();    };
-
-
 
     // Set initial state based on which page is active on load
     if (document.getElementById('welcome-page').classList.contains('active')) {
@@ -88,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Modify the login form submission handler
-    // Replace the existing login form event listener (around line 75) with this:
     if (loginForm) {
         loginForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
@@ -111,15 +99,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     // Skip instructions button
     if (skipInstructionsBtn) {
         skipInstructionsBtn.addEventListener('click', function () {
             showPage('login-page');
         });
     }
-
-
 
     // Start scan button - initiate NFC scanning
     if (startScanBtn) {
@@ -209,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const progressBarContainer = document.getElementById('progress-bar-container');
 
         // Pages that should show the progress bar
-        const progressBarPages = ['configuration-page', 'calibration-page', 'calibration-options-page', 'calibration-input-page'];
+        const progressBarPages = ['configuration-page', 'calibration-page', 'calibration-options-page', 'calibration-input-page', 'calibrated-page'];
 
         // Show/hide progress bar based on current page
         if (progressBarPages.includes(pageId)) {
@@ -242,6 +227,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Third step and second line - inactive
                 document.getElementById('line-2').classList.remove('completed');
                 document.getElementById('step-maintain').classList.remove('current', 'completed');
+            } else if (pageId === 'calibrated-page') {
+                // First step - completed with check mark
+                document.getElementById('step-config').classList.remove('current');
+                document.getElementById('step-config').classList.add('completed');
+
+                // First line - completed
+                document.getElementById('line-1').classList.add('completed');
+
+                // Second step - completed with check mark
+                document.getElementById('step-calibrate').classList.remove('current');
+                document.getElementById('step-calibrate').classList.add('completed');
+
+                // Second line - completed
+                document.getElementById('line-2').classList.add('completed');
+
+                // Third step - disabled (grey, no current class)
+                document.getElementById('step-maintain').classList.remove('current');
+                // We don't add 'completed' to the third step as it's disabled
             }
             document.getElementById(pageId).style.paddingTop = "calc(60px + 0.5cm)";
 
@@ -266,16 +269,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (calibrationNextBtn) {
         calibrationNextBtn.addEventListener('click', function () {
-            showPage('welcome-page'); // Change this to your next page
+            showPage('calibration-options-page');
         });
     }
+
     if (calibOptionsBackBtn) {
         calibOptionsBackBtn.addEventListener('click', function () {
             showPage('calibration-page');
         });
     }
-
-
 
     if (calibOptionsNextBtn) {
         calibOptionsNextBtn.addEventListener('click', function () {
@@ -284,22 +286,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedOption) {
                 if (selectedOption.value === 'calibrate') {
                     // If "Calibrate" is selected, go to next calibration step
-                    showPage('calibration-input-page'); // Change this to your next page
+                    showPage('calibration-input-page');
                 } else {
                     // If "Already calibrated" is selected, maybe skip to a different page
-                    showPage('welcome-page'); // Change this based on your flow
+                    showPage('welcome-page');
                 }
             } else {
                 // If nothing is selected, you might want to show a message
                 alert('Please select an option');
             }
-        });
-    }
-
-    // Update the calibrationNextBtn click handler to go to the new page
-    if (calibrationNextBtn) {
-        calibrationNextBtn.addEventListener('click', function () {
-            showPage('calibration-options-page');
         });
     }
 
@@ -319,6 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
     if (calibrationInputBackBtn) {
         calibrationInputBackBtn.addEventListener('click', function () {
             showPage('calibration-options-page');
@@ -327,23 +323,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (calibrationInputNextBtn) {
         calibrationInputNextBtn.addEventListener('click', function () {
-            // Go to the welcome page or next page in your flow
+            // Make sensor status flash 3 times
+            if (sensorStatus) {
+                sensorStatus.classList.add('flare');
+
+                // Create and add reconnect button if it doesn't exist
+                let reconnectBtn = document.getElementById('reconnect-btn');
+                if (!reconnectBtn) {
+                    reconnectBtn = document.createElement('button');
+                    reconnectBtn.id = 'reconnect-btn';
+                    reconnectBtn.className = 'reconnect-btn';
+                    reconnectBtn.textContent = 'Simulate Reconnect';
+                    sensorStatus.parentNode.insertBefore(reconnectBtn, sensorStatus.nextSibling);
+
+                    // Add event listener to the reconnect button
+                    reconnectBtn.addEventListener('click', function () {
+                        showPage('calibrated-page');
+                    });
+                }
+
+                // Remove the flare effect after animation completes (approx 4 seconds)
+                setTimeout(function () {
+                    sensorStatus.classList.remove('flare');
+                }, 4000);
+            }
+        });
+    }
+
+    // Calibrated page buttons
+    const calibratedBackBtn = document.getElementById('calibrated-back-btn');
+    if (calibratedBackBtn) {
+        calibratedBackBtn.addEventListener('click', function () {
+            showPage('calibration-input-page');
+        });
+    }
+
+    const calibratedNextBtn = document.getElementById('calibrated-next-btn');
+    if (calibratedNextBtn) {
+        calibratedNextBtn.addEventListener('click', function () {
             showPage('welcome-page');
         });
     }
 
-    // Enable the Next button only when both inputs have values
-    function validateInputsold() {
-        if (temperatureInput.value.trim() !== '' && humidityInput.value.trim() !== '') {
-            calibrationInputNextBtn.disabled = false;
-        } else {
-            calibrationInputNextBtn.disabled = true;
-        }
-    }
     function validateInputFormat(input) {
         const regex = /^-?\d{1,2}\.\d{2}$/; //minus dd.dd
         return regex.test(input.value);
     }
+
     function validateInputs() {
         if (temperatureInput && humidityInput) {
             const tempHasValue = temperatureInput.value.trim() !== '';
@@ -423,13 +449,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     if (document.querySelector('.see-more')) {
         document.querySelector('.see-more').addEventListener('click', function () {
             document.getElementById('additional-info').classList.toggle('hidden');
             this.textContent = document.getElementById('additional-info').classList.contains('hidden') ? 'See more' : 'See less';
         });
     }
+
     if (document.getElementById('calibrate-option')) {
         document.getElementById('calibrate-option').addEventListener('change', function () {
             if (this.checked) {
@@ -437,6 +463,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-
 });

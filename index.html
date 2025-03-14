@@ -232,13 +232,14 @@
         <h1>Calibration</h1>
 
         <div class="info-container">
-            <p id="calibration-info">Hold the reference device next to the sensor device and wait for the values to
+            <p id="calibration-info">Hold the reference device next to the sensor and wait for the values to
                 stabilize. <span class="see-more">See more</span></p>
             <p id="additional-info" class="hidden">Make sure reference device and sensor are in the same conditions,
-                without direct sunlight and at a distance from heat sources. Input the measurement (20.45 format)</p>
+                without direct sunlight and at a distance from heat sources.</p>
         </div>
 
-        <p class="sensor-status"><span class="status-dot-red"></span>Not connected to sensor</p>
+        <p class="sensor-status"><span class="status-dot-red"></span>Not connected to sensor. Bring phone close to the
+            sensor to reconnect</p>
 
         <h2>Reference values</h2>
 
@@ -272,6 +273,25 @@
             <button id="calibration-input-next-btn" class="btn" disabled>Next</button>
         </div>
     </div>
+    <!-- Calibrated Page -->
+    <div id="calibrated-page" class="page">
+        <div class="centered-content">
+            <h1>The new sensor has been set up</h1>
+            <div class="success-icon">
+                <i class="ph-bold ph-check-circle"></i>
+            </div>
+        </div>
+        <div class="button-row">
+            <button id="calibrated-back-btn" class="btn btn-secondary">Back</button>
+            <button id="calibrated-next-btn" class="btn">Next</button>
+        </div>
+    </div>
+
+
+
+
+
+
     <script src="script.js"></script>
     <!-- Bottom Toolbar -->
     <div class="bottom-toolbar">
