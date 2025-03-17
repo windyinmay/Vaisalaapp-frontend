@@ -74,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const step56DoneBtn = document.getElementById('step5-6-done-btn');
     const intervalSelect = document.getElementById('calibration-interval');
     const customIntervalInput = document.getElementById('custom-interval');
+    const usernameInput = document.getElementById('username');
+    //const loginForm = document.getElementById('login-form');
+    const setupMaintenanceOption = document.getElementById('setup-maintenance-option');
+    const skipMaintenanceOption = document.getElementById('skip-maintenance-option');
+    const preCalibrationOption = document.getElementById('pre-calibrated-option');
+    //const intervalSelect = document.getElementById('calibration-interval');
 
 
 
@@ -108,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 gallery.style.display = 'none';
             }
         });
+        updateButtonsBasedOnFlow(flow);
     }
 
 
@@ -123,7 +130,31 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         document.body.classList.remove('at-welcome-page');
     }
+    if (setupMaintenanceOption) {
+        setupMaintenanceOption.addEventListener('change', function () {
+            if (this.checked) {
+                // If "Set up maintenance plan" is selected, go directly to the interval page
+                showPage('maintenance-interval-page');
+            }
+        });
+    }
 
+    if (skipMaintenanceOption) {
+        skipMaintenanceOption.addEventListener('change', function () {
+            if (this.checked) {
+                // If "Skip maintenance plan" is selected, go directly to the complete page
+                showPage('maintenance-complete-page');
+            }
+        });
+    }
+    if (preCalibrationOption) {
+        preCalibrationOption.addEventListener('change', function () {
+            if (this.checked) {
+                // If "The sensor is already calibrated" is selected, go directly to the maintenance plan page
+                showPage('maintenance-plan-page');
+            }
+        });
+    }
 
     // NFC Info page next button
     if (nfcNextBtn) {
@@ -133,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+
+
+    // Add this to your showPage function to handle special pages with no toolbar text
     function showPage(pageId) {
         // Hide all pages by removing active class
         document.querySelectorAll('.page').forEach(page => {
@@ -153,23 +187,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Update top toolbar text based on current page
-        if (pageId === 'instructions-page' ||
-            pageId === 'installation-guide-page' ||
-            pageId === 'probe-mounting-page' ||
-            pageId === 'step1-page' ||
-            pageId === 'step2-page' ||
-            pageId === 'step3-page' ||
-            pageId === 'step4-page' ||
-            pageId === 'step5-6-page') {
-            // For instructions and related pages, show "Instructions"
-            const backButtonText = document.querySelector('.back-button span');
-            if (backButtonText) {
+        const backButtonText = document.querySelector('.back-button span');
+
+        if (backButtonText) {
+            if (pageId === 'instructions-page' ||
+                pageId === 'installation-guide-page' ||
+                pageId === 'probe-mounting-page' ||
+                pageId === 'step1-page' ||
+                pageId === 'step2-page' ||
+                pageId === 'step3-page' ||
+                pageId === 'step4-page' ||
+                pageId === 'step5-6-page') {
+                // For instructions and related pages
                 backButtonText.textContent = 'Instructions';
-            }
-        } else if (pageId !== 'welcome-page') {
-            // For other pages, update based on the current flow
-            const backButtonText = document.querySelector('.back-button span');
-            if (backButtonText) {
+            } else if (pageId === 'assistance-page' || pageId === 'settings-page') {
+                // For assistance and settings pages - no text
+                backButtonText.textContent = '';
+            } else if (pageId !== 'welcome-page') {
+                // For other pages, update based on the current flow
                 backButtonText.textContent = currentFlow === 'setup' ? 'Set up new sensor' : 'Calibrate existing sensor';
             }
         }
@@ -177,13 +212,46 @@ document.addEventListener('DOMContentLoaded', function () {
         updateProgressBar(pageId);
     }
     // Modify the login form submission handler
+    //if (loginForm) {
+    //    loginForm.addEventListener('submit', function (event) {
+    //        event.preventDefault(); // Prevent form submission
+    //        showPage('nfc-info-page'); // Changed from scan-page to nfc-info-page
+    //        return false;
+    //    });
+    //}
     if (loginForm) {
         loginForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
-            showPage('nfc-info-page'); // Changed from scan-page to nfc-info-page
-            return false;
+
+            // Check if email is valid before proceeding
+            const emailValue = usernameInput.value.trim();
+
+            if (!validateEmail(emailValue)) {
+                // If email is invalid, show error and stop
+                usernameInput.classList.add('invalid-input');
+                document.getElementById('email-validation-message').style.display = 'block';
+                return false;
+            } else {
+                // If email is valid, hide error and continue
+                usernameInput.classList.remove('invalid-input');
+                document.getElementById('email-validation-message').style.display = 'none';
+                // Now proceed to next page
+                showPage('nfc-info-page');
+            }
         });
     }
+
+    function updateButtonsBasedOnFlow(flow) {
+        // Update the calibratedNextBtn text
+        if (calibratedNextBtn) {
+            if (flow === 'calibration') {
+                calibratedNextBtn.textContent = 'To main menu';
+            } else {
+                calibratedNextBtn.textContent = 'Next';
+            }
+        }
+    }
+
 
     if (mainMenuBtns) {
         mainMenuBtns.forEach((btn) => {
@@ -512,6 +580,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 showPage('welcome-page');
             }
         });
+        //if (currentFlow === 'calibration') {
+        //    calibratedNextBtn.textContent = 'To main menu';
+        //}
     }
 
     function validateInputFormat(input) {
@@ -534,8 +605,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-
-    // New function to validate on blur (focus lost)
     function validateFieldOnBlur(input, errorMessage) {
         // Don't validate empty fields
         if (input.value.trim() === '') {
@@ -557,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!validateInputFormat(input)) {
             input.classList.add('invalid-input');
 
-            // Update message container
+            // Update message container - error in black now
             if (messageContainer) {
                 messageContainer.innerHTML = errorMessage;
                 messageContainer.style.display = 'block';
@@ -576,6 +645,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update Next button state
         validateInputs();
     }
+
 
     // Set up event listeners
     if (temperatureInput) {
@@ -853,77 +923,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return date.toLocaleDateString('en-US', options);
     }
 
-    // Function to calculate and update due date based on selected interval
-    function updateDueDateold() {
-        const intervalSelect = document.getElementById('calibration-interval');
-        const dueDateContainer = document.getElementById('due-date-container');
 
-        if (!intervalSelect || !dueDateContainer) return;
 
-        let months = 6; // Default
-
-        if (intervalSelect.value === 'other') {
-            const customIntervalInput = document.getElementById('custom-interval');
-            if (customIntervalInput && customIntervalInput.value) {
-                months = parseInt(customIntervalInput.value, 10);
-            }
-        } else {
-            months = parseInt(intervalSelect.value, 10);
-        }
-
-        // Calculate due date from today
-        const dueDate = new Date();
-        dueDate.setMonth(dueDate.getMonth() + months);
-
-        // Update the displayed date
-        const dueDateElement = document.getElementById('calibration-due-date');
-        if (dueDateElement) {
-            dueDateElement.textContent = formatDate(dueDate);
-        }
-        if (!intervalSelect.value) {
-            document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
-            return;
-        }
-
-        // Replace the initial updateDueDate() call in the DOMContentLoaded section with:
-        document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
-    }
-    function updateDueDateold2() {
-        const intervalSelect = document.getElementById('calibration-interval');
-        const dueDateContainer = document.getElementById('due-date-container');
-
-        if (!intervalSelect || !dueDateContainer) return;
-
-        // Check if a valid option is selected first
-        if (!intervalSelect.value) {
-            document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
-            return;
-        }
-
-        let months = 6; // Default
-
-        if (intervalSelect.value === 'other') {
-            const customIntervalInput = document.getElementById('custom-interval');
-            if (customIntervalInput && customIntervalInput.value) {
-                months = parseInt(customIntervalInput.value, 10);
-            }
-        } else {
-            months = parseInt(intervalSelect.value, 10);
-        }
-
-        // Calculate due date from today
-        const dueDate = new Date();
-        dueDate.setMonth(dueDate.getMonth() + months);
-
-        // Update the displayed date
-        const dueDateElement = document.getElementById('calibration-due-date');
-        if (dueDateElement) {
-            dueDateElement.textContent = formatDate(dueDate);
-        }
-    }
 
     function updateDueDate() {
-        const intervalSelect = document.getElementById('calibration-interval');
+        //const intervalSelect = document.getElementById('calibration-interval');
         const dueDateContainer = document.getElementById('due-date-container');
 
         if (!intervalSelect || !dueDateContainer) return;
@@ -940,7 +944,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let months = 6; // Default
 
         if (intervalSelect.value === 'other') {
-            const customIntervalInput = document.getElementById('custom-interval');
+            //const customIntervalInput = document.getElementById('custom-interval');
             if (customIntervalInput && customIntervalInput.value) {
                 months = parseInt(customIntervalInput.value, 10);
             }
@@ -965,12 +969,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('calibration-due-date').textContent = '-- Select an interval --';
 
         // Event listeners
-        const intervalSelect = document.getElementById('calibration-interval');
+        //const intervalSelect = document.getElementById('calibration-interval');
         if (intervalSelect) {
             intervalSelect.addEventListener('change', updateDueDate);
         }
 
-        const customIntervalInput = document.getElementById('custom-interval');
+        //const customIntervalInput = document.getElementById('custom-interval');
         if (customIntervalInput) {
             customIntervalInput.addEventListener('input', updateDueDate);
         }
@@ -978,14 +982,142 @@ document.addEventListener('DOMContentLoaded', function () {
     if (intervalSelect) {
         // Initial due date calculation
         updateDueDate();
-
+        validateIntervalSelection();
         // Update when dropdown changes
         intervalSelect.addEventListener('change', updateDueDate);
+        intervalSelect.addEventListener('change', validateIntervalSelection);
+
     }
 
     if (customIntervalInput) {
         // Update when custom interval changes
         customIntervalInput.addEventListener('input', updateDueDate);
     }
+    const formGroup = usernameInput.closest('.form-group');
+    const messageContainer = document.createElement('div');
+    messageContainer.id = 'email-validation-message';
+    messageContainer.className = 'email-validation-message';
+    messageContainer.innerHTML = "Email must be in format: something@example.com";
+
+    // Insert the message container after the username input
+    formGroup.appendChild(messageContainer);
+
+    // Function to validate email format
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    // Add validation on form submission
+    loginForm.addEventListener('submit', function (event) {
+        const emailValue = usernameInput.value.trim();
+
+        // If email is invalid, prevent form submission
+        if (!validateEmail(emailValue)) {
+            event.preventDefault();
+            usernameInput.classList.add('invalid-input');
+            messageContainer.style.display = 'block';
+            return false;
+        } else {
+            usernameInput.classList.remove('invalid-input');
+            messageContainer.style.display = 'none';
+            // Continue with existing form handler
+        }
+    });
+
+    // Add validation on blur (when user leaves the input field)
+    usernameInput.addEventListener('blur', function () {
+        const emailValue = usernameInput.value.trim();
+
+        // Only validate if user has entered something
+        if (emailValue !== '') {
+            if (!validateEmail(emailValue)) {
+                usernameInput.classList.add('invalid-input');
+                messageContainer.style.display = 'block';
+            } else {
+                usernameInput.classList.remove('invalid-input');
+                messageContainer.style.display = 'none';
+            }
+        }
+    });
+
+    // Clear error on input
+    usernameInput.addEventListener('input', function () {
+        const emailValue = usernameInput.value.trim();
+
+        // If it becomes valid while typing, remove error
+        if (validateEmail(emailValue)) {
+            usernameInput.classList.remove('invalid-input');
+            messageContainer.style.display = 'none';
+        }
+    });
+
+    function validateIntervalSelection() {
+        const intervalSelect = document.getElementById('calibration-interval');
+        const intervalNextBtn = document.getElementById('interval-next-btn');
+
+        if (intervalSelect && intervalNextBtn) {
+            // Check if a valid option is selected (not the disabled default option)
+            if (!intervalSelect.value || intervalSelect.value === "") {
+                // Disable the Next button if no valid option is selected
+                intervalNextBtn.disabled = true;
+            } else {
+                // Enable the Next button when a valid option is selected
+                intervalNextBtn.disabled = false;
+            }
+        }
+    }
+    const homeToolbarItem = document.querySelector('.toolbar-item:first-child');
+
+    // Add click event listener to the home icon
+    if (homeToolbarItem) {
+        homeToolbarItem.addEventListener('click', function () {
+            // Navigate to the welcome/main page
+            showPage('welcome-page');
+        });
+    }
+    const instructionsToolbarItem = document.querySelector('.toolbar-item:nth-child(2)');
+
+    // Add click event listener to the instructions icon
+    if (instructionsToolbarItem) {
+        instructionsToolbarItem.addEventListener('click', function () {
+            // Navigate to the instructions page
+            showPage('instructions-page');
+        });
+    }
+    // Get the bottom toolbar items
+    const assistanceToolbarItem = document.querySelector('.toolbar-item:nth-child(3)');
+    const settingsToolbarItem = document.querySelector('.toolbar-item:nth-child(4)');
+
+    // Home icon - navigate to main menu
+    if (homeToolbarItem) {
+        homeToolbarItem.addEventListener('click', function () {
+            showPage('welcome-page');
+        });
+    }
+
+    // Instructions icon - navigate to instructions
+    if (instructionsToolbarItem) {
+        instructionsToolbarItem.addEventListener('click', function () {
+            showPage('instructions-page');
+        });
+    }
+
+    // Assistance icon - navigate to assistance page
+    if (assistanceToolbarItem) {
+        assistanceToolbarItem.addEventListener('click', function () {
+            showPage('assistance-page');
+        });
+    }
+
+    // Settings icon - navigate to settings page
+    if (settingsToolbarItem) {
+        settingsToolbarItem.addEventListener('click', function () {
+            showPage('settings-page');
+        });
+    }
+
+
+
 
 });

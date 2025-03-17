@@ -296,7 +296,7 @@
     <!-- Calibrated Page -->
     <div id="calibrated-page" class="page">
         <div class="centered-content">
-            <h1 class="flow-text setup-flow">The new sensor has been set up</h1>
+            <h1 class="flow-text setup-flow">The new sensor has been calibrated</h1>
             <h1 class="flow-text calibration-flow" style="display:none">Sensor calibration is complete</h1>
             <div class="success-icon">
                 <i class="ph-bold ph-check-circle"></i>
@@ -598,7 +598,58 @@
             <button id="step5-6-done-btn" class="btn">Done</button>
         </div>
     </div>
+    <!-- Assistance Page -->
+    <div id="assistance-page" class="page">
+        <h1>Assistance</h1>
 
+        <div class="assistance-container">
+            <button class="assistance-btn">
+                <i class="ph-light ph-chats"></i>
+                Talk with a chatbot
+            </button>
+
+            <button class="assistance-btn">
+                <i class="ph-light ph-headset"></i>
+                Call customer service
+            </button>
+
+            <button class="assistance-btn">
+                <i class="ph-light ph-question-mark"></i>
+                Frequently asked questions
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settings-page" class="page">
+        <h1>Settings</h1>
+
+        <div class="settings-container">
+            <div class="settings-item">
+                <div class="settings-label">Metric units</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="metric-units-toggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-label">Revert to factory settings</div>
+                <button class="reset-btn">Reset</button>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-label">Choose language</div>
+                <select id="language-select" class="value-select">
+                    <option value="" disabled selected>Choose language</option>
+                    <option value="en">English</option>
+                    <option value="fi">Suomi</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
 
 
