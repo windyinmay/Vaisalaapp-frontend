@@ -200,7 +200,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 pageId === 'step5-6-page') {
                 // For instructions and related pages
                 backButtonText.textContent = 'Instructions';
-            } else if (pageId === 'assistance-page' || pageId === 'settings-page') {
+            } else if (pageId === 'assistance-page' || pageId === 'settings-page' ||
+                pageId === 'chatbot-page') {
                 // For assistance and settings pages - no text
                 backButtonText.textContent = '';
             } else if (pageId !== 'welcome-page') {
@@ -1117,7 +1118,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
+    const chatbotBtn = document.querySelector('.assistance-btn:first-child');
+    if (chatbotBtn) {
+        chatbotBtn.addEventListener('click', function () {
+            showPage('chatbot-page');
+        });
+    }
 
 
 });
