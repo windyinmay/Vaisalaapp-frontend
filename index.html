@@ -132,11 +132,12 @@
     <!-- NFC Information Page -->
     <div id="nfc-info-page" class="page">
         <h1>NFC</h1>
-        <p>Phone can be connected to the sensor via NFC (Near Field Communication).</p>
+        <p id="nfc-info1">Phone can be connected to the sensor via NFC (Near Field Communication).</p>
         <div class="nfc-image pre-nfc">
             <img src="images/pre-nfcc2.png" alt="NFC Connection">
         </div>
-        <p>NFC is short range (several cm) and phone does NOT stay connected to the sensor, so you have to reconnect if
+        <p id="nfc-info2">NFC is short range (several cm) and phone does NOT stay connected to the sensor, so you have
+            to reconnect if
             you get disconnected.</p>
         <button id="nfc-next-btn" class="btn">Next</button>
     </div>
@@ -166,7 +167,7 @@
             <img src="images/scan-complete2.png" alt="scan complete">
         </div>
         <p id="scanComplete">Sensor HMD90 connected</p>
-        <p>NFC tag ID: <span id="device-id">--</span></p>
+        <p id="scanComplete2">NFC tag ID: <span id="device-id">--</span></p>
         <button id="done-btn" class="btn">Next</button>
     </div>
 
@@ -199,7 +200,7 @@
     <!-- Calibration Page -->
     <div id="calibration-page" class="page">
         <h1>Current values</h1>
-        <p>Values for the last 48 hours can be viewed here</p>
+        <!--<p>Values for the last 48 hours</p>-->
 
         <div class="calibration-container">
             <div class="value-group">
@@ -217,9 +218,16 @@
         </div>
 
         <div class="chart-container">
-            <img src="images/chart2.png" alt="Chart" class="chart-image">
+            <img src="images/chart3.png" alt="Chart" class="chart-image">
         </div>
-
+        <div class="log-container">
+            <p id="history-log">History log <span class="see-more-history">See more</span></p>
+            <p id="history-log-2" class="hidden">20.02.2024 11:22 sensor HMD60 installed in building A hall 2 by Matti,
+                Company X<br>
+                20.02.2025 12:22 NFC connection established with Huawei 12<br>
+                20.02.2025 12:22 NFC connection timeout<br>
+                20.02.2025 12:25 maintained by Matti, Company X. Temperature values were adjusted by 0.07 C</p>
+        </div>
         <div class="button-row">
             <button id="calibration-back-btn" class="btn btn-secondary">Back</button>
             <button id="calibration-next-btn" class="btn">Next</button>

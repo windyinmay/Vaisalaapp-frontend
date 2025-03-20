@@ -5,9 +5,11 @@ body {
     font-family: Arial, sans-serif;
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px 20px 0;
+    padding: 20px 20px 70px;
     box-sizing: border-box;
     padding-bottom: 60px;
+    background-color: white;
+
 }
 
 h1 {
@@ -25,13 +27,23 @@ h2 {
 p {
     font-size: 16px;
     line-height: 1.5;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 /* Pages */
 .page {
     display: none;
     margin-bottom: 60px;
+
+}
+
+.page {
+    min-height: calc(100vh - 140px);
+    padding-bottom: 80px;
+    background-color: white;
+    margin-bottom: 0;
+    position: relative;
+    overflow-y: auto;
 }
 
 .page.active {
@@ -44,7 +56,7 @@ p {
 }
 
 .page.with-progress-bar {
-    padding-top: calc(60px + 0.5cm) !important;
+    padding-top: calc(60px + 0.45cm) !important;
 }
 
 /* Form Elements */
@@ -155,10 +167,19 @@ h1.ready-to-scan0 {
 
 /* NFC Status */
 #nfc-status,
-#scanComplete {
+#scanComplete,
+#scanComplete2 {
     padding: 10px;
-    margin: 10px 2px;
+    margin: 20px 20px;
     text-align: center;
+    font-size: 16px;
+}
+
+#nfc-info2,
+#nfc-info1 {
+
+    margin: 10px 10px;
+
     font-size: 16px;
 }
 
@@ -281,11 +302,13 @@ h1.ready-to-scan0 {
 /* Image Gallery */
 .image-gallery-container {
     width: 100%;
-    margin: 15px 0 25px;
-    overflow: hidden;
+    margin: 15px 0 20px;
+    overflow: visible;
+    /* Changed from hidden to allow vertical flow */
+    max-height: none;
 }
 
-.image-gallery {
+.image-gallery-old {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -298,11 +321,22 @@ h1.ready-to-scan0 {
     scrollbar-width: none;
 }
 
+.image-gallery {
+    display: flex;
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    padding-bottom: 15px;
+    width: 100%;
+    align-items: center;
+}
+
 .image-gallery::-webkit-scrollbar {
     display: none;
 }
 
-.gallery-item {
+.gallery-item-old {
     flex: 0 0 80%;
     scroll-snap-align: center;
     margin-right: 15px;
@@ -313,10 +347,25 @@ h1.ready-to-scan0 {
     padding-right: 0;
 }
 
+.gallery-item {
+    flex: 0 0 70%;
+    /* Changed from percentage-based width */
+    margin-right: 0;
+    /* Remove horizontal margins */
+    margin-bottom: 15px;
+    /* Add vertical spacing between items */
+    width: 80%;
+    /* Make items full width */
+    max-width: 100%;
+    /* Allow full width */
+    padding-right: 0;
+}
+
 .gallery-item:last-child {
     margin-right: 0;
     padding-right: 0;
     border-right-width: 1px;
+    margin-bottom: 20px;
 }
 
 .gallery-item img {
@@ -545,7 +594,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
     width: 100%;
     z-index: 900;
     background-color: #f5f5f5;
-    height: 2cm;
+    height: 1.4cm;
     padding: 0;
 }
 
@@ -590,7 +639,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 }
 
 .step-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
 }
 
@@ -606,10 +655,10 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
     background-color: #ccc;
     margin: 0;
     position: relative;
-    top: -15px;
+    top: -11px;
     z-index: 1;
-    margin-left: -15px;
-    margin-right: -15px;
+    margin-left: -20px;
+    margin-right: -20px;
     width: calc(100% + 30px);
 }
 
@@ -622,15 +671,15 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 }
 
 .step-circle {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     border: 2px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .progress-step .step-dot {
@@ -688,7 +737,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 }
 
 .chart-container {
-    margin: 20px 0 60px;
+    margin: 20px 0 20px;
     width: 100%;
 }
 
@@ -763,6 +812,12 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 }
 
 .see-more {
+    color: #0A2A3D;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.see-more-history {
     color: #0A2A3D;
     font-weight: bold;
     cursor: pointer;
@@ -1191,23 +1246,28 @@ h1+h1 {
     }
 }
 
+
+
 @media screen and (min-width: 600px) {
     body {
         border: 1px solid #ddd;
         border-radius: 16px 16px 0 0;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        height: 100vh;
+        height: calc(100vh - 40px);
         overflow-y: auto;
         position: relative;
-        padding-bottom: 0;
+        padding-bottom: 60px;
         max-height: 800px;
         margin: 20px auto;
+
     }
 
     .page {
-        min-height: auto;
-        padding-bottom: 60px;
+        min-height: calc(100vh - 180px);
     }
+
+
+
 
     .top-toolbar,
     .bottom-toolbar,
@@ -1429,4 +1489,10 @@ input:checked+.toggle-slider:before {
     background-color: #0A2A3D;
     border-bottom-right-radius: 4px;
     color: white;
+}
+
+.log-container {
+    margin-top: 0;
+    margin-bottom: 90px;
+    background-color: white;
 }

@@ -211,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         updateProgressBar(pageId);
+
     }
     // Modify the login form submission handler
     //if (loginForm) {
@@ -458,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('step-maintain').classList.add('completed');
 
             }
-            document.getElementById(pageId).style.paddingTop = "calc(60px + 0.5cm)";
+            document.getElementById(pageId).style.paddingTop = "calc(60px + 0.45cm)";
 
         } else {
             progressBarContainer.classList.add('hidden');
@@ -1123,6 +1124,19 @@ document.addEventListener('DOMContentLoaded', function () {
         chatbotBtn.addEventListener('click', function () {
             showPage('chatbot-page');
         });
+    }
+    const historyLogElement = document.getElementById('history-log');
+    const historyLogContentElement = document.getElementById('history-log-2');
+
+    if (historyLogElement && historyLogContentElement) {
+        const seeMoreSpan = historyLogElement.querySelector('.see-more-history');
+
+        if (seeMoreSpan) {
+            seeMoreSpan.addEventListener('click', function () {
+                historyLogContentElement.classList.toggle('hidden');
+                this.textContent = historyLogContentElement.classList.contains('hidden') ? 'See more' : 'See less';
+            });
+        }
     }
 
 
