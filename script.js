@@ -1138,6 +1138,18 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+    if (historyLogElement && historyLogContentElement) {
+        const caretIcon = historyLogElement.querySelector('.toggle-history');
+
+        if (caretIcon) {
+            caretIcon.addEventListener('click', function () {
+                historyLogContentElement.classList.toggle('hidden');
+                // Toggle between caret down and up icons
+                this.classList.toggle('ph-caret-down');
+                this.classList.toggle('ph-caret-up');
+            });
+        }
+    }
 
 
 });
