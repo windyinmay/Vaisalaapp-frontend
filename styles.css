@@ -118,7 +118,7 @@ p {
 
 /* Welcome Page Styles */
 h1.ready-to-scan0 {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .button-group {
@@ -170,15 +170,16 @@ h1.ready-to-scan0 {
 #scanComplete,
 #scanComplete2 {
     padding: 10px;
-    margin: 20px 20px;
+    margin: 5px 5px;
     text-align: center;
     font-size: 16px;
 }
 
+
 #nfc-info2,
 #nfc-info1 {
 
-    margin: 10px 10px;
+    margin: 0px;
 
     font-size: 16px;
 }
@@ -254,7 +255,7 @@ h1.ready-to-scan0 {
 .nfc-image,
 .ready-to-scan,
 .scan-complete {
-    margin-top: 20px;
+
     text-align: center;
 }
 
@@ -569,6 +570,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 #skip-nfc-btn {
     bottom: 130px;
     background-color: #ff9800;
+
 }
 
 .button-row {
@@ -737,7 +739,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 }
 
 .chart-container {
-    margin: 20px 0 20px;
+    margin: 5px 0 20px;
     width: 100%;
 }
 
@@ -1495,4 +1497,12 @@ input:checked+.toggle-slider:before {
     margin-top: 0;
     margin-bottom: 90px;
     background-color: white;
+}
+
+#scan-page {
+    /* Allow the page to scroll if content exceeds viewport */
+    overflow-y: auto;
+
+    /* Ensure enough room for buttons at bottom */
+    padding-bottom: 160px;
 }

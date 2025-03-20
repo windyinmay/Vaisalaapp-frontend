@@ -821,11 +821,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Third result item (Probe Mounting)
-        if (resultItems.length > 2) {
-            resultItems[2].addEventListener('click', function () {
-                showPage('probe-mounting-page');
-            });
-        }
+        //if (resultItems.length > 2) {
+        //    resultItems[2].addEventListener('click', function () {
+        //        showPage('probe-mounting-page');
+        //    });
+        //}
     }
 
     // Installation Guide back button
