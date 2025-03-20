@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const DISCONNECT_THRESHOLD = 10; // Increased threshold - wait longer before disconnecting
 
 
-    async function startNFC() {
+    async function startNFC_working() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
             if (nfcStatus) {
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // NFC Scanning functionality
-    async function startNFC_old() {
+    async function startNFC() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
             if (nfcStatus) {
