@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanner Page</title>
+    <title>NFC Scanner</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
@@ -50,7 +50,7 @@
     </div>
     <!-- Welcome Page -->
     <div id="welcome-page" class="page active">
-        <h1>Welcome</h1>
+        <h1 id="welcome">Welcome</h1>
 
         <div class="button-group">
             <button id="mainmenu1" class="btn" data-flow="setup"><i class="ph-bold ph-clipboard"></i>Set up new
@@ -63,7 +63,7 @@
 
     <!-- App Overview Page -->
     <div id="app-overview-page" class="page">
-        <h1>App Overview</h1>
+        <h1 class="upward">App overview</h1>
         <div class="instructions-content">
             <p class="flow-text setup-flow">Installation instructions and troubleshooting can be found from the bottom
                 toolbar. Here is a quick guide</p>
@@ -115,7 +115,7 @@
 
     <!-- Login Page -->
     <div id="login-page" class="page">
-        <h1>Login</h1>
+        <h1 class="upward">Login</h1>
         <p>Enter username and password sent to your email</p>
         <form id="login-form">
             <div class="form-group">
@@ -131,7 +131,7 @@
     </div>
     <!-- NFC Information Page -->
     <div id="nfc-info-page" class="page">
-        <h1>NFC</h1>
+        <h1 class="upward">NFC</h1>
         <p id="nfc-info1">Phone can be connected to the sensor via NFC (Near Field Communication).</p>
         <div class="nfc-image pre-nfc">
             <img src="images/pre-nfcc2.png" alt="NFC Connection">
@@ -143,12 +143,12 @@
     </div>
     <!-- Scan NFC Page -->
     <div id="scan-page" class="page">
-        <h1 class="ready-to-scan0">Ready to scan</h1>
-        <div class="nfc-icon">
-            <div class="nfc-wave"></div>
-            <div class="nfc-wave"></div>
-            <div class="nfc-wave"></div>
-        </div>
+        <h1 class="upward">Ready to scan</h1>
+        <!--<div class="nfc-icon">-->
+        <!--    <div class="nfc-wave"></div>-->
+        <!--    <div class="nfc-wave"></div>-->
+        <!--    <div class="nfc-wave"></div>-->
+        <!--</div>-->
         <div class="ready-to-scan">
             <img src="images/ready-to-scan3.png" alt="NFC">
         </div>
@@ -162,7 +162,7 @@
 
     <!-- Connected Page -->
     <div id="connected-page" class="page">
-        <h1>Scan complete</h1>
+        <h1 class="upward">Scan complete</h1>
         <div class="scan-complete">
             <img src="images/scan-complete2.png" alt="scan complete">
         </div>
@@ -308,8 +308,9 @@
     <!-- Calibrated Page -->
     <div id="calibrated-page" class="page">
         <div class="centered-content">
-            <h1 class="flow-text setup-flow">The new sensor has been calibrated</h1>
-            <h1 class="flow-text calibration-flow" style="display:none">Sensor calibration is complete</h1>
+            <h1 class="success" class="flow-text setup-flow">The new sensor has been calibrated</h1>
+            <h1 class="success" class="flow-text calibration-flow" style="display:none">Sensor calibration is complete
+            </h1>
             <div class="success-icon">
                 <i class="ph-bold ph-check-circle"></i>
             </div>
@@ -343,7 +344,7 @@
 
     <!-- Maintenance Interval Page  -->
     <div id="maintenance-interval-page" class="page">
-        <h1>Maintenance Plan</h1>
+        <h1>Maintenance plan</h1>
 
         <p id="maintenance-1">Set up calibration interval</p>
         <p id="maintenance-2">Get the calibration interval from documentation</p>
@@ -377,8 +378,9 @@
     <!-- Maintenance Complete Page -->
     <div id="maintenance-complete-page" class="page">
         <div class="centered-content">
-            <h1 class="flow-text setup-flow">The sensor has been set up</h1>
-            <h1 class="flow-text calibration-flow" style="display:none">Calibration and maintenance plan complete</h1>
+            <h1 class="success" class="flow-text setup-flow">The sensor has been set up</h1>
+            <h1 class="success" class="flow-text calibration-flow" style="display:none">Calibration and maintenance plan
+                complete</h1>
             <div class="success-icon">
                 <i class="ph-bold ph-check-circle"></i>
             </div>
@@ -391,7 +393,7 @@
 
     <!-- Instructions Page -->
     <div id="instructions-page" class="page">
-        <h1>Instructions</h1>
+        <h1 class="upward">Instructions</h1>
 
         <div class="search-container">
             <input type="text" id="search-input" value="210697" placeholder="Search for instructions...">
@@ -450,7 +452,7 @@
 
     <!-- Installation Guide Page -->
     <div id="installation-guide-page" class="page">
-        <h1>210697 Installation Guide</h1>
+        <h1 class="upward">210697 Installation Guide</h1>
 
         <p class="guide-section-title">Overview</p>
 
@@ -469,7 +471,7 @@
     </div>
     <!-- Probe Mounting Page -->
     <div id="probe-mounting-page" class="page">
-        <h1>Probe Mounting Using the Duct Installation Kit</h1>
+        <h1 class="upward">Probe Mounting Using the Duct Installation Kit</h1>
 
         <p class="guide-content">
             Thread the clamping bush, nut, and supporting bar onto the probe cable.
@@ -493,7 +495,7 @@
     </div>
     <!-- Step 1 Page -->
     <div id="step1-page" class="page">
-        <h1>Step 1</h1>
+        <h1 class="upward">Step 1</h1>
 
         <p class="guide-content">
             Thread the clamping bush, nut, and supporting bar onto the probe cable.
@@ -518,7 +520,7 @@
 
     <!-- Step 2 Page -->
     <div id="step2-page" class="page">
-        <h1>Step 2</h1>
+        <h1 class="upward">Step 2</h1>
 
         <p class="guide-content">
             Thread the hanger to the probe and then thread the supporting bar to the hanger. Fasten the bushing around
@@ -542,7 +544,7 @@
 
     <!-- Step 3 Page -->
     <div id="step3-page" class="page">
-        <h1>Step 3</h1>
+        <h1 class="upward">Step 3</h1>
 
         <p class="guide-content">
             Pass the probe through the flange, and thread the nut to the flange.
@@ -567,7 +569,7 @@
 
     <!-- Step 4 Page -->
     <div id="step4-page" class="page">
-        <h1>Step 4</h1>
+        <h1 class="upward">Step 4</h1>
 
         <p class="guide-content">
             Fasten the seal to the flange.
@@ -593,7 +595,7 @@
 
     <!-- Step 5-6 Page (Final) -->
     <div id="step5-6-page" class="page">
-        <h1>Step 5</h1>
+        <h1 class="upward">Step 5</h1>
 
         <p class="guide-content">
             Make a Ø 20 mm hole in the surface of the chamber or duct.
@@ -612,7 +614,7 @@
     </div>
     <!-- Assistance Page -->
     <div id="assistance-page" class="page">
-        <h1>Assistance</h1>
+        <h1 class="upward">Assistance</h1>
 
         <div class="assistance-container">
             <button class="assistance-btn">
@@ -634,7 +636,7 @@
 
     <!-- Settings Page -->
     <div id="settings-page" class="page">
-        <h1>Settings</h1>
+        <h1 class="upward">Settings</h1>
 
         <div class="settings-container">
             <div class="settings-item">
@@ -664,7 +666,7 @@
     </div>
     <!-- Simple Chatbot Page -->
     <div id="chatbot-page" class="page">
-        <h1>Chatbot</h1>
+        <h1 class="upward">Chatbot</h1>
 
         <div class="chat-container">
             <!-- Bot message -->

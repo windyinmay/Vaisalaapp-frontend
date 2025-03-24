@@ -598,7 +598,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (calibrationNextBtn) {
         calibrationNextBtn.addEventListener('click', function () {
-            showPage('calibration-options-page');
+            // Check current flow to determine next page
+            if (currentFlow === 'calibration') {
+                // For "calibrate existing sensor" flow, skip calibration-options-page
+                showPage('calibration-input-page');
+            } else {
+                // For "setup new sensor" flow, continue to calibration-options-page
+                showPage('calibration-options-page');
+            }
         });
     }
 
@@ -646,7 +653,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (calibrationInputBackBtn) {
         calibrationInputBackBtn.addEventListener('click', function () {
-            showPage('calibration-options-page');
+            // Check current flow to determine where to go back to
+            if (currentFlow === 'calibration') {
+                // For "calibrate existing sensor" flow, go back to calibration page (sensor dashboard)
+                showPage('calibration-page');
+            } else {
+                // For "setup new sensor" flow, go back to calibration options page
+                showPage('calibration-options-page');
+            }
         });
     }
 
@@ -1115,7 +1129,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageContainer = document.createElement('div');
     messageContainer.id = 'email-validation-message';
     messageContainer.className = 'email-validation-message';
-    messageContainer.innerHTML = "Email must be in format: something@example.com";
+    messageContainer.innerHTML = "Email must be in format: example@example.com";
 
     // Insert the message container after the username input
     formGroup.appendChild(messageContainer);
