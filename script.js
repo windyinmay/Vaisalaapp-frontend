@@ -330,6 +330,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let ndef = null;
     let tagCheckTimer = null;
 
+    const CONNECTION_TIMEOUT = 5000; // 5 seconds for initial connection
+    const DISCONNECT_TIMEOUT = 2000; // 2 seconds before disconnecting
+    let lastReadingTime = 0;
+    let isConnected = false;
+    let connectionCheckInterval = null;
+
     async function startNFC() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
@@ -339,27 +345,21 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Clear any existing intervals and timers
+        // Clear any existing interval
         if (connectionCheckInterval) {
             clearInterval(connectionCheckInterval);
             connectionCheckInterval = null;
         }
 
-        if (tagCheckTimer) {
-            clearInterval(tagCheckTimer);
-            tagCheckTimer = null;
-        }
-
         try {
-            ndef = new NDEFReader();
+            const ndef = new NDEFReader();
             if (nfcStatus) {
                 nfcStatus.textContent = 'Requesting NFC permissions...';
             }
 
             await ndef.scan();
-
             if (nfcStatus) {
-                nfcStatus.textContent = 'NFC Started! Sccanning for tags...';
+                nfcStatus.textContent = 'NFC Started! Sscanning for tags...';
             }
 
             // Set initial connection timeout
@@ -369,7 +369,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }, CONNECTION_TIMEOUT);
 
-            ndef.addEventListener("reading", async (event) => {
+            // Start connection checking interval
+            connectionCheckInterval = setInterval(() => {
+                const currentTime = Date.now();
+
+                // If we were connected and haven't had a reading in DISCONNECT_TIMEOUT ms
+                if (isConnected && (currentTime - lastReadingTime > DISCONNECT_TIMEOUT)) {
+                    isConnected = false;
+                    if (nfcStatus) {
+                        nfcStatus.textContent = 'Tag disconnected';
+                    }
+
+                    // Update scan complete text
+                    const scanCompleteEl = document.getElementById('scanComplete');
+                    if (scanCompleteEl) {
+                        scanCompleteEl.textContent = 'Sensor HMD90 disconnected - Status: Inactive';
+                    }
+                }
+            }, 500); // Check every half second
+
+            ndef.addEventListener("reading", (event) => {
                 // Clear the timeout when a tag is found
                 clearTimeout(timeoutId);
 
@@ -395,12 +414,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     showPage('connected-page');
-
-                    // Start actively polling for tag presence
-                    if (!tagCheckTimer) {
-                        tagCheckTimer = setInterval(checkTagPresence, 1000);
-                    }
                 }
+            });
+
+            // Add an event listener to regularly read the tag if it's still in range
+            ndef.addEventListener("reading", () => {
+                // This is the key part: Web NFC will continuously read the tag 
+                // while it's in range and fire reading events, which updates lastReadingTime
+                lastReadingTime = Date.now();
             });
 
             ndef.addEventListener("readingerror", (error) => {
@@ -427,43 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Function to actively check if tag is still present
-    async function checkTagPresence() {
-        try {
-            // Force a new scan to check for tag
-            await ndef.scan();
 
-            // Check if we're past the disconnect timeout
-            const currentTime = Date.now();
-            if (isConnected && (currentTime - lastReadingTime > DISCONNECT_TIMEOUT)) {
-                // If we haven't had a reading in DISCONNECT_TIMEOUT ms, consider disconnected
-                handleDisconnect();
-            }
-        } catch (error) {
-            // If there's an error scanning, assume tag is gone
-            handleDisconnect();
-        }
-    }
-
-    function handleDisconnect() {
-        isConnected = false;
-
-        if (nfcStatus) {
-            nfcStatus.textContent = 'Tag disconnected';
-        }
-
-        // Update scan complete text
-        const scanCompleteEl = document.getElementById('scanComplete');
-        if (scanCompleteEl) {
-            scanCompleteEl.textContent = 'Sensor HMD90 disconnected - Status: Inactive';
-        }
-
-        // Stop checking for tag once we've determined it's gone
-        if (tagCheckTimer) {
-            clearInterval(tagCheckTimer);
-            tagCheckTimer = null;
-        }
-    }
 
     async function startNFC_working() {
         // Check if Web NFC is available
