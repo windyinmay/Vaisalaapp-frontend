@@ -323,7 +323,130 @@ document.addEventListener('DOMContentLoaded', function () {
     const DISCONNECT_THRESHOLD = 10; // Increased threshold - wait longer before disconnecting
     const DISCONNECT_TIMEOUT = 5000; // 5 seconds before disconnecting
 
+
+    let isConnected = false;
+    let activeScan = false;
+
     async function startNFC() {
+        // Check if Web NFC is available
+        if (typeof NDEFReader === 'undefined') {
+            if (nfcStatus) {
+                nfcStatus.textContent = 'Web NFC is not supported in this browser';
+            }
+            return;
+        }
+
+        // Clear any existing interval
+        if (connectionCheckInterval) {
+            clearInterval(connectionCheckInterval);
+            connectionCheckInterval = null;
+        }
+
+        try {
+            const ndef = new NDEFReader();
+            if (nfcStatus) {
+                nfcStatus.textContent = 'Requesting NFC permissions...';
+            }
+
+            await ndef.scan();
+            activeScan = true;
+
+            if (nfcStatus) {
+                nfcStatus.textContent = 'NFC Started! Scanning for taggs...';
+            }
+
+            // Set initial connection timeout
+            const timeoutId = setTimeout(() => {
+                if (nfcStatus) {
+                    nfcStatus.textContent = 'Connection timed out after 5 seconds';
+                }
+            }, CONNECTION_TIMEOUT);
+
+            // Start connection checking interval
+            connectionCheckInterval = setInterval(async () => {
+                const currentTime = Date.now();
+
+                // If connected but haven't had a reading in a while
+                if (isConnected && (currentTime - lastReadingTime > DISCONNECT_TIMEOUT)) {
+                    // Try to force a new reading to see if tag is still there
+                    try {
+                        // This refreshes the scanning - may help detect if tag is still present
+                        if (activeScan) {
+                            await ndef.scan();
+                        }
+
+                        // If we don't get a reading event soon after this, we'll consider disconnected
+                        // in the next interval check
+                    } catch (error) {
+                        // Error trying to rescan likely means the tag is gone
+                        isConnected = false;
+                        if (nfcStatus) {
+                            nfcStatus.textContent = 'Tag disconnected';
+                        }
+
+                        // Update scan complete text
+                        const scanCompleteEl = document.getElementById('scanComplete');
+                        if (scanCompleteEl) {
+                            scanCompleteEl.textContent = 'Sensor HMD90 disconnected - Status: Inactive';
+                        }
+                    }
+                }
+            }, 1000); // Check every second
+
+            ndef.addEventListener("reading", (event) => {
+                // Clear the timeout when a tag is found
+                clearTimeout(timeoutId);
+
+                // Update the last reading time
+                lastReadingTime = Date.now();
+
+                // Update connected state
+                if (!isConnected) {
+                    isConnected = true;
+
+                    if (deviceId) {
+                        deviceId.textContent = event.serialNumber;
+                    }
+
+                    if (nfcStatus) {
+                        nfcStatus.textContent = 'Connected successfully';
+                    }
+
+                    // Add connection status to the scanComplete element
+                    const scanCompleteEl = document.getElementById('scanComplete');
+                    if (scanCompleteEl) {
+                        scanCompleteEl.textContent = 'Sensor HMD90 connected - Status: Active';
+                    }
+
+                    showPage('connected-page');
+                }
+            });
+
+            ndef.addEventListener("readingerror", (error) => {
+                // Clear the timeout on error
+                clearTimeout(timeoutId);
+
+                if (nfcStatus) {
+                    nfcStatus.textContent = `Error reading tag: ${error.message}`;
+                }
+            });
+
+        } catch (error) {
+            let errorMessage = `Error: ${error.name}`;
+            if (error.name === 'NotAllowedError') {
+                errorMessage += ' - NFC permission denied';
+            } else if (error.name === 'NotSupportedError') {
+                errorMessage += ' - NFC not supported on this device';
+            } else {
+                errorMessage += ` - ${error.message}`;
+            }
+            if (nfcStatus) {
+                nfcStatus.textContent = errorMessage;
+            }
+        }
+    }
+
+    async function startNFC_working() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
             if (nfcStatus) {
