@@ -534,7 +534,7 @@ body:not(.at-welcome-page) .welcome-top-toolbar {
 
 #device_name,
 #device_name_2 {
-    margin: 5px 0 5px 0;
+    margin: 5px 0 0 0;
     text-align: left;
     padding-left: 13px;
 }
