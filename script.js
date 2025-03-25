@@ -321,9 +321,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let readingCounter = 0;
     const CONNECTION_TIMEOUT = 5000; // 5 seconds for initial connection
     const DISCONNECT_THRESHOLD = 10; // Increased threshold - wait longer before disconnecting
+    const DISCONNECT_TIMEOUT = 5000; // 5 seconds before disconnecting
 
-
-    async function startNFC_working() {
+    async function startNFC() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
             if (nfcStatus) {
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // NFC Scanning functionality
-    async function startNFC() {
+    async function startNFCold() {
         // Check if Web NFC is available
         if (typeof NDEFReader === 'undefined') {
             if (nfcStatus) {
