@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             await ndef.scan();
             if (nfcStatus) {
-                nfcStatus.textContent = 'NFC Started! Scanning for tags...';
+                nfcStatus.textContent = 'NFC Started! Scanning for tagss...';
             }
 
             // Set initial connection timeout
