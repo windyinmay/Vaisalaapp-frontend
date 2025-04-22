@@ -1,723 +1,886 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Scanner</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
-</head>
-
-<body>
-    <div class="welcome-top-toolbar">
-        <img src="images/logo_small.png" alt="Logo" style="max-height: 28px;">
-    </div>
-    <!-- Top Toolbar -->
-    <div class="top-toolbar">
-        <div class="back-button">
-            <i class="ph-light ph-caret-left"></i>
-            <span>Set up new sensor</span>
-        </div>
-    </div>
-
-    <!-- Progress Bar  -->
-    <div id="progress-bar-container" class="hidden">
-        <div class="progress-bar">
-            <div class="progress-step" id="step-config">
-                <div class="step-circle">
-                    <span class="step-dot"></span>
-                </div>
-                <span class="step-label">Configure</span>
-            </div>
-            <div class="progress-line" id="line-1"></div>
-            <div class="progress-step" id="step-calibrate">
-                <div class="step-circle">
-                    <span class="step-dot"></span>
-                </div>
-                <span class="step-label">Calibrate</span>
-            </div>
-            <div class="progress-line" id="line-2"></div>
-            <div class="progress-step" id="step-maintain">
-                <div class="step-circle">
-                    <span class="step-dot"></span>
-                </div>
-                <span class="step-label">Plan</span>
-            </div>
-        </div>
-    </div>
-    <!-- Welcome Page -->
-    <div id="welcome-page" class="page active">
-        <h1 id="welcome">Welcome</h1>
-
-        <div class="button-group">
-            <button id="mainmenu1" class="btn" data-flow="setup"><i class="ph-bold ph-clipboard"></i>Set up new
-                sensor</button>
-            <button id="mainmenu2" class="btn" data-flow="calibration"><i class="ph-bold ph-clipboard"></i>Calibrate
-                existing sensor</button>
-            <button id="mainmenu3" class="btn"><i class="ph-bold ph-clipboard-text"></i>Instructions</button>
-        </div>
-    </div>
-
-    <!-- App Overview Page -->
-    <div id="app-overview-page" class="page">
-        <h1 class="upward">App overview</h1>
-        <div class="instructions-content">
-            <p class="flow-text setup-flow">Installation instructions and troubleshooting can be found from the bottom
-                toolbar. Here is a quick guide</p>
-            <p class="flow-text calibration-flow" style="display:none">Calibration instructions and troubleshooting can
-                be found from the bottom toolbar. Here is a quick guide</p>
-
-            <!-- Image Gallery -->
-            <div class="image-gallery-container">
-                <div class="image-gallery setup-flow">
-                    <div class="gallery-item">
-                        <img src="images/new1.png" alt="New 1">
-                        <p class="gallery-caption">Physically install the sensor</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new2.png" alt="New 2">
-                        <p class="gallery-caption">Hold reference device</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new3.png" alt="New 3">
-                        <p class="gallery-caption">Update values in the app</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new4.png" alt="New 4">
-                        <p class="gallery-caption">Calibration complete</p>
-                    </div>
-                </div>
-                <div class="image-gallery calibration-flow" style="display:none">
-                    <div class="gallery-item">
-                        <img src="images/existing1.png" alt="Calibration 1">
-                        <p class="gallery-caption">Locate sensors using maintenance plan</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new2.png" alt="Calibration 2">
-                        <p class="gallery-caption">Hold reference device</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new3.png" alt="Calibration 3">
-                        <p class="gallery-caption">Update values in the app</p>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/new4.png" alt="Calibration 4">
-                        <p class="gallery-caption">Calibration complete</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button id="skip-instructions-btn" class="btn">Skip Instructions</button>
-    </div>
-
-    <!-- Login Page -->
-    <div id="login-page" class="page">
-        <h1 class="upward">Login</h1>
-        <p>Enter username and password sent to your email</p>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password">
-            </div>
-            <button type="submit" class="btn">Log in</button>
-        </form>
-    </div>
-    <!-- NFC Information Page -->
-    <div id="nfc-info-page" class="page">
-        <h1 class="upward">NFC</h1>
-        <p id="nfc-info1">Phone can be connected to the sensor via NFC (Near Field Communication).</p>
-        <div class="nfc-image pre-nfc">
-            <img src="images/pre-nfcc2.png" alt="NFC Connection">
-        </div>
-        <p id="nfc-info2">NFC is short range (several cm) and phone does NOT stay connected to the sensor, so you have
-            to reconnect if
-            you get disconnected.</p>
-        <button id="nfc-next-btn" class="btn">Next</button>
-    </div>
-    <!-- Scan NFC Page -->
-    <div id="scan-page" class="page">
-        <h1 class="upward">Ready to scan</h1>
-        <!--<div class="nfc-icon">-->
-        <!--    <div class="nfc-wave"></div>-->
-        <!--    <div class="nfc-wave"></div>-->
-        <!--    <div class="nfc-wave"></div>-->
-        <!--</div>-->
-        <div class="ready-to-scan">
-            <img src="images/ready-to-scan3.png" alt="NFC">
-        </div>
-        <p id="nfc-status">Bring phone very close to the sensor and move it around until they connect</p>
-
-        <button id="start-scan-btn" class="btn">
-            Start Scanning
-        </button>
-        <button id="skip-nfc-btn" class="btn">Skip NFC Detection</button>
-    </div>
-
-    <!-- Connected Page -->
-    <div id="connected-page" class="page">
-        <h1 class="upward">Scan complete</h1>
-        <div class="scan-complete">
-            <img src="images/scan-complete2.png" alt="scan complete">
-        </div>
-        <p id="scanComplete">Sensor HMD90 connected</p>
-        <p id="scanComplete2">NFC tag ID: <span id="device-id">--</span></p>
-        <button id="done-btn" class="btn">Next</button>
-    </div>
-
-    <!-- Configuration Page -->
-    <div id="configuration-page" class="page">
-        <h1>Configuration</h1>
-        <div class="config-container">
-            <div class="device-info">
-                <img src="images/hmw90.png" alt="Device Image">
-                <div class="device-text">
-                    <p id="device_name">HMW90</p>
-                    <p id="device_name_2"> HMD60929192298y298</p>
-                    <p id="connected-to-sensor"><span class="status-dot"></span>Connected to sensor</p>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="device-name">Sensor name</label>
-            <input type="text" id="device-name" name="device-name" placeholder="Edit the name (optional)">
-        </div>
-        <div class="form-group">
-            <label for="device-location">Location</label>
-            <input type="text" id="device-location" name="device-location" placeholder="Edit location (optional)">
-        </div>
-        <div class="button-row">
-            <button id="back-btn" class="btn btn-secondary">Back</button>
-            <button id="next-btn" class="btn">Next</button>
-        </div>
-    </div>
-    <!-- Calibration Page -->
-    <div id="calibration-page" class="page">
-        <h1>Sensor dashboard</h1>
-        <!--<p>Values for the last 48 hours</p>-->
-
-        <div class="calibration-container">
-            <div class="value-group">
-                <label for="current-value">Current value</label>
-                <div class="value-display">0.03 C</div>
-            </div>
-
-            <div class="value-group">
-                <label for="select-values">Select values</label>
-                <select id="select-values" class="value-select">
-                    <option value="temperature">Temperature</option>
-                    <option value="humidity">Humidity</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <img src="images/chart3.png" alt="Chart" class="chart-image">
-        </div>
-        <div class="log-container">
-            <!--<p id="history-log">History logs <span class="see-more-history">See more</span><i class="ph-bold ph-caret-down"></i></p>-->
-            <p id="history-log">History logs <i class="ph-bold ph-caret-down toggle-history"></i></p>
-            <div id="history-log-2" class="hidden">
-                <div class="log-event">
-                    <strong>20.02.2024 11:22</strong><br>
-                    sensor HMD60 installed in building A hall 2 by Matti, Company X
-                </div>
-                <div class="log-event">
-                    <strong>20.02.2025 12:11</strong><br>
-                    NFC connection established with Huawei 12
-                </div>
-                <div class="log-event">
-                    <strong>20.02.2025 12:22</strong><br>
-                    NFC connection timeout
-                </div>
-                <div class="log-event">
-                    <strong>20.02.2025 12:25</strong><br>
-                    Planned maintenance. Temperature values were adjusted by 0.07 C by Matti, Company X
-                </div>
-            </div>
-        </div>
-        <div class="button-row">
-            <button id="calibration-back-btn" class="btn btn-secondary">Back</button>
-            <button id="calibration-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-    <!-- Calibration Options Page -->
-    <div id="calibration-options-page" class="page">
-        <h1>Calibration</h1>
-        <p>Sensor package should contain information if it is pre-calibrated</p>
-
-        <div class="radio-options-container">
-            <div class="radio-option">
-                <input type="radio" id="calibrate-option" name="calibration-option" value="calibrate">
-                <label for="calibrate-option">Calibrate</label>
-            </div>
-
-            <div class="radio-option">
-                <input type="radio" id="pre-calibrated-option" name="calibration-option" value="pre-calibrated">
-                <label for="pre-calibrated-option">The sensor is already calibrated</label>
-            </div>
-        </div>
-
-        <div class="button-row">
-            <button id="calib-options-back-btn" class="btn btn-secondary">Back</button>
-            <button id="calib-options-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Calibration Input Page -->
-    <div id="calibration-input-page" class="page">
-        <h1>Calibration</h1>
-
-        <div class="info-container">
-            <p id="calibration-info">Hold the reference device next to the sensor and wait for the values to
-                stabilize. <span class="see-more">See more</span></p>
-            <p id="additional-info" class="hidden">Make sure reference device and sensor are in the same conditions,
-                without direct sunlight and at a distance from heat sources.</p>
-        </div>
-
-        <p class="sensor-status"><span class="status-dot-red"></span>Not connected to sensor. Bring phone close to the
-            sensor to reconnect</p>
-
-        <h2>Reference values</h2>
-
-        <div class="reference-input-container">
-            <div class="reference-input-row">
-                <label for="temperature-input">Temperature</label>
-                <div class="input-unit-group">
-                    <input type="text" id="temperature-input" placeholder="-" inputmode="decimal">
-                    <select id="temperature-unit">
-                        <option value="celsius">Celsius</option>
-                        <option value="fahrenheit">Fahrenheit</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="reference-input-row">
-                <label for="humidity-input">Humidity</label>
-                <div class="input-unit-group">
-                    <input type="text" id="humidity-input" placeholder="-" inputmode="decimal">
-                    <select id="humidity-unit">
-                        <option value="percent">%</option>
-                        <option value="ppm">ppm</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-row">
-            <button id="calibration-input-back-btn" class="btn btn-secondary">Back</button>
-            <button id="calibration-input-next-btn" class="btn" disabled>Calibrate</button>
-        </div>
-    </div>
-    <!-- Calibrated Page -->
-    <div id="calibrated-page" class="page">
-        <div class="centered-content">
-            <h1 class="success" class="flow-text setup-flow">The new sensor has been calibrated</h1>
-            <h1 class="success" class="flow-text calibration-flow" style="display:none">Sensor calibration is complete
-            </h1>
-            <div class="success-icon">
-                <i class="ph-bold ph-check-circle"></i>
-            </div>
-        </div>
-        <div class="button-row">
-            <button id="calibrated-back-btn" class="btn btn-secondary">Back</button>
-            <button id="calibrated-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-    <!-- Maintenance Plan Options Page -->
-    <div id="maintenance-plan-page" class="page">
-        <h1>Maintenance plan</h1>
-
-        <div class="radio-options-container">
-            <div class="radio-option">
-                <input type="radio" id="setup-maintenance-option" name="maintenance-option" value="setup-maintenance">
-                <label for="setup-maintenance-option">Set up maintenance plan</label>
-            </div>
-
-            <div class="radio-option">
-                <input type="radio" id="skip-maintenance-option" name="maintenance-option" value="skip-maintenance">
-                <label for="skip-maintenance-option">Skip maintenance plan</label>
-            </div>
-        </div>
-
-        <div class="button-row">
-            <button id="maintenance-back-btn" class="btn btn-secondary">Back</button>
-            <button id="maintenance-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Maintenance Interval Page  -->
-    <div id="maintenance-interval-page" class="page">
-        <h1>Maintenance plan</h1>
-
-        <p id="maintenance-1">Set up calibration interval</p>
-        <p id="maintenance-2">Get the calibration interval from documentation</p>
-
-        <div class="form-group">
-            <select id="calibration-interval" class="value-select">
-                <option value="" disabled selected>Choose interval</option>
-                <option value="6">Every 6 months</option>
-                <option value="12">Every 12 months</option>
-                <option value="other">Other interval</option>
-            </select>
-        </div>
-
-        <div id="custom-interval-container" class="form-group hidden">
-            <label for="custom-interval">Enter interval (months)</label>
-            <input type="number" id="custom-interval" min="1" max="60" value="3">
-        </div>
-
-        <!-- New due date container -->
-        <div id="due-date-container" class="due-date-container">
-            <p>Next calibration due date:</p>
-            <p id="calibration-due-date" class="date">17 September 2025</p>
-        </div>
-
-        <div class="button-row">
-            <button id="interval-back-btn" class="btn btn-secondary">Back</button>
-            <button id="interval-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Maintenance Complete Page -->
-    <div id="maintenance-complete-page" class="page">
-        <div class="centered-content">
-            <h1 class="success" class="flow-text setup-flow">The sensor has been set up</h1>
-            <h1 class="success" class="flow-text calibration-flow" style="display:none">Calibration and maintenance plan
-                complete</h1>
-            <div class="success-icon">
-                <i class="ph-bold ph-check-circle"></i>
-            </div>
-        </div>
-        <div class="button-row">
-            <button id="complete-back-btn" class="btn btn-secondary">Back</button>
-            <button id="finish-btn" class="btn">To main page</button>
-        </div>
-    </div>
-
-    <!-- Instructions Page -->
-    <div id="instructions-page" class="page">
-        <h1 class="upward">Instructions</h1>
-
-        <div class="search-container">
-            <input type="text" id="search-input" value="210697" placeholder="Search for instructions...">
-            <div class="search-filters">
-                <div class="filter-group">
-                    <label for="language-filter">Language:</label>
-                    <select id="language-filter">
-                        <option value="english">English</option>
-                        <option value="spanish">Español</option>
-                        <option value="french">Français</option>
-                        <option value="german">Deutsch</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="sort-filter">Sort by:</label>
-                    <select id="sort-filter">
-                        <option value="relevance">Relevance</option>
-                        <option value="newest">Newest first</option>
-                        <option value="oldest">Oldest first</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <p class="results-count">32 results</p>
-
-        <div class="search-results">
-            <div class="result-item">
-                <div class="result-title">210697 Installation Guide</div>
-                <div class="result-meta">
-                    <span class="result-type">HMP3, HMP7...</span>
-                    <span class="result-type">User guide.</span>
-                </div>
-            </div>
-
-            <div class="result-item">
-                <div class="result-title">Overview</div>
-                <div class="result-description">Duct installation kit</div>
-                <div class="result-meta">
-                    <span class="result-type">HMP3, HMP7...</span>
-                    <span class="result-type">User guide</span>
-                </div>
-            </div>
-
-            <div class="result-item">
-                <div class="result-title">Probe Mounting Using the Duct Installation Kit</div>
-                <div class="result-meta">
-                    <span class="result-type">HMP3, HMP7...</span>
-                    <span class="result-type">User guide</span>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-    <!-- Installation Guide Page -->
-    <div id="installation-guide-page" class="page">
-        <h1 class="upward">210697 Installation Guide</h1>
-
-        <p class="guide-section-title">Overview</p>
-
-        <p class="guide-content">
-            Duct Installation Kit (Vaisala item 210697) is designed to support the probe head of a cabled probe so
-            it can be installed to a chamber or duct. The kit is compatible with Vaisala probes that have a M9×1
-            body thread at the rear of the probe head. For example, the following products are compatible:
-            HMT333 and HMT337 humidity and temperature transmitter
-            HMP3 and HMP7 humidity and temperature probe
-        </p>
-
-        <div class="button-row">
-            <button id="installation-guide-back-btn" class="btn btn-secondary">Back</button>
-            <button id="installation-guide-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-    <!-- Probe Mounting Page -->
-    <div id="probe-mounting-page" class="page">
-        <h1 class="upward">Probe Mounting Using the Duct Installation Kit</h1>
-
-        <p class="guide-content">
-            Thread the clamping bush, nut, and supporting bar onto the probe cable.
-        </p>
-
-        <div class="guide-image">
-            <img src="images/step0.png" alt="Installation Step">
-        </div>
-
-        <p class="guide-section-image-name">Duct Installation Kit 210697 Dimensions</p>
-
-        <p class="guide-content">
-            HMT333 and HMT337 humidity and temperature transmitter
-            HMP3 and HMP7 humidity and temperature probe
-        </p>
-
-        <div class="button-row">
-            <button id="probe-mounting-back-btn" class="btn btn-secondary">Back</button>
-            <button id="probe-mounting-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-    <!-- Step 1 Page -->
-    <div id="step1-page" class="page">
-        <h1 class="upward">Step 1</h1>
-
-        <p class="guide-content">
-            Thread the clamping bush, nut, and supporting bar onto the probe cable.
-        </p>
-
-        <div class="guide-image">
-            <img src="images/step1.png" alt="Step 1 Installation">
-        </div>
-
-        <ol class="guide-list">
-            <li>M9×1 thread on probe head</li>
-            <li>Supporting bar</li>
-            <li>Clamping bush</li>
-            <li>Nut</li>
-        </ol>
-
-        <div class="button-row">
-            <button id="step1-back-btn" class="btn btn-secondary">Back</button>
-            <button id="step1-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Step 2 Page -->
-    <div id="step2-page" class="page">
-        <h1 class="upward">Step 2</h1>
-
-        <p class="guide-content">
-            Thread the hanger to the probe and then thread the supporting bar to the hanger. Fasten the bushing around
-            the cable and the supporting bar.
-        </p>
-
-        <div class="guide-image">
-            <img src="images/step2.png" alt="Step 2 Installation">
-        </div>
-
-        <ol class="guide-list">
-            <li>Hanger</li>
-            <li>Bushing</li>
-        </ol>
-
-        <div class="button-row">
-            <button id="step2-back-btn" class="btn btn-secondary">Back</button>
-            <button id="step2-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Step 3 Page -->
-    <div id="step3-page" class="page">
-        <h1 class="upward">Step 3</h1>
-
-        <p class="guide-content">
-            Pass the probe through the flange, and thread the nut to the flange.
-        </p>
-
-        <div class="guide-image">
-            <img src="images/step3.png" alt="Step 3 Installation">
-        </div>
-
-        <ol class="guide-list">
-            <li>Flange</li>
-            <li>Clamping bush</li>
-            <li>Bushing</li>
-            <li>Nut</li>
-        </ol>
-
-        <div class="button-row">
-            <button id="step3-back-btn" class="btn btn-secondary">Back</button>
-            <button id="step3-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Step 4 Page -->
-    <div id="step4-page" class="page">
-        <h1 class="upward">Step 4</h1>
-
-        <p class="guide-content">
-            Fasten the seal to the flange.
-        </p>
-
-        <div class="guide-image">
-            <img src="images/step4.png" alt="Step 4 Installation">
-        </div>
-
-        <ol class="guide-list">
-            <li>Seal</li>
-            <li>Flange</li>
-            <li>Plastic washer, 4 pcs</li>
-            <li>Washer, 4 pcs</li>
-            <li>Screw, 4 pcs</li>
-        </ol>
-
-        <div class="button-row">
-            <button id="step4-back-btn" class="btn btn-secondary">Back</button>
-            <button id="step4-next-btn" class="btn">Next</button>
-        </div>
-    </div>
-
-    <!-- Step 5-6 Page (Final) -->
-    <div id="step5-6-page" class="page">
-        <h1 class="upward">Step 5</h1>
-
-        <p class="guide-content">
-            Make a Ø 20 mm hole in the surface of the chamber or duct.
-        </p>
-
-        <h1>Step 6</h1>
-
-        <p class="guide-content">
-            Insert the probe through the hole and fasten the flange using screws and washers.
-        </p>
-
-        <div class="button-row">
-            <button id="step5-6-back-btn" class="btn btn-secondary">Back</button>
-            <button id="step5-6-done-btn" class="btn">Done</button>
-        </div>
-    </div>
-    <!-- Assistance Page -->
-    <div id="assistance-page" class="page">
-        <h1 class="upward">Assistance</h1>
-
-        <div class="assistance-container">
-            <button class="assistance-btn">
-                <i class="ph-light ph-chats"></i>
-                Talk with a chatbot
-            </button>
-
-            <button class="assistance-btn">
-                <i class="ph-light ph-headset"></i>
-                Call customer service
-            </button>
-
-            <button class="assistance-btn">
-                <i class="ph-light ph-question-mark"></i>
-                Frequently asked questions
-            </button>
-        </div>
-    </div>
-
-    <!-- Settings Page -->
-    <div id="settings-page" class="page">
-        <h1 class="upward">Settings</h1>
-
-        <div class="settings-container">
-            <div class="settings-item">
-                <div class="settings-label">Metric units</div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="metric-units-toggle" checked>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-label">Revert to factory settings</div>
-                <button class="reset-btn">Reset</button>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-label">Choose language</div>
-                <select id="language-select" class="value-select">
-                    <option value="" disabled selected>Choose language</option>
-                    <option value="en">English</option>
-                    <option value="fi">Suomi</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <!-- Simple Chatbot Page -->
-    <div id="chatbot-page" class="page">
-        <h1 class="upward">Chatbot</h1>
-
-        <div class="chat-container">
-            <!-- Bot message -->
-            <div class="chat-message bot-message">
-                <div class="message-bubble">Hi. I am a chatbot. How can I help you?</div>
-            </div>
-
-            <!-- User message -->
-            <div class="chat-message user-message">
-                <div class="message-bubble">HMW90, can't connect</div>
-            </div>
-
-            <!-- Bot response -->
-            <div class="chat-message bot-message">
-                <div class="message-bubble">Can you please explain the problem in more detail? Do you see any error
-                    messages?</div>
-            </div>
-        </div>
-    </div>
-
-
-    <script src="script.js"></script>
-    <!-- Bottom Toolbar -->
-    <div class="bottom-toolbar">
-        <div class="toolbar-item">
-            <i class="ph-light ph-house"></i>
-            <span>Home</span>
-        </div>
-        <div class="toolbar-item">
-            <i class="ph-light ph-article"></i>
-            <span>Instructions</span>
-        </div>
-        <div class="toolbar-item">
-            <i class="ph-light ph-chat-teardrop"></i>
-            <span>Assistance</span>
-        </div>
-        <div class="toolbar-item">
-            <i class="ph-light ph-gear"></i>
-            <span>Settings</span>
-        </div>
-    </div>
-</body>
-
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>NFC Scanner</title>
+		<link rel="stylesheet" href="styles.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css"
+		/>
+	</head>
+
+	<body>
+		<div class="welcome-top-toolbar">
+			<img src="images/logo_small.png" alt="Logo" style="max-height: 48px" />
+		</div>
+		<!-- Top Toolbar -->
+		<div class="top-toolbar">
+			<div class="back-button">
+				<i class="ph-light ph-caret-left"></i>
+				<span>Set up new sensor</span>
+			</div>
+		</div>
+
+		<!-- Progress Bar  -->
+		<div id="progress-bar-container" class="hidden">
+			<div class="progress-bar">
+				<div class="progress-step" id="step-config">
+					<div class="step-circle">
+						<span class="step-dot"></span>
+					</div>
+					<span class="step-label">Configure</span>
+				</div>
+				<div class="progress-line" id="line-1"></div>
+				<div class="progress-step" id="step-calibrate">
+					<div class="step-circle">
+						<span class="step-dot"></span>
+					</div>
+					<span class="step-label">Calibrate</span>
+				</div>
+				<div class="progress-line" id="line-2"></div>
+				<div class="progress-step" id="step-maintain">
+					<div class="step-circle">
+						<span class="step-dot"></span>
+					</div>
+					<span class="step-label">Plan</span>
+				</div>
+			</div>
+		</div>
+		<!-- Welcome Page -->
+		<div id="welcome-page" class="page active">
+			<h1 id="welcome">Welcome</h1>
+
+			<div class="button-group">
+				<button id="mainmenu1" class="btn" data-flow="setup">
+					<i class="ph-bold ph-clipboard"></i>Set up new sensor
+				</button>
+				<button id="mainmenu2" class="btn" data-flow="calibration">
+					<i class="ph-bold ph-clipboard"></i>Calibrate existing sensor
+				</button>
+				<button id="mainmenu3" class="btn">
+					<i class="ph-bold ph-clipboard-text"></i>Instructions
+				</button>
+			</div>
+		</div>
+
+		<!-- App Overview Page -->
+		<div id="app-overview-page" class="page">
+			<h1 class="upward">App overview</h1>
+			<div class="instructions-content">
+				<p class="flow-text setup-flow">
+					Installation instructions and troubleshooting can be found from the
+					bottom toolbar. Here is a quick guide
+				</p>
+				<p class="flow-text calibration-flow" style="display: none">
+					Calibration instructions and troubleshooting can be found from the
+					bottom toolbar. Here is a quick guide
+				</p>
+
+				<!-- Image Gallery -->
+				<div class="image-gallery-container">
+					<div class="image-gallery setup-flow">
+						<div class="gallery-item">
+							<img src="orginal_images/install_1.png" alt="New 1" />
+							<p class="gallery-caption">1. Physically install the device</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_2.png" alt="New 2" />
+							<p class="gallery-caption">
+								2. Connect the app with the sensor using
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_3.png" alt="New 2" />
+							<p class="gallery-caption">3. Hold the reference device</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_4.png" alt="New 3" />
+							<p class="gallery-caption">
+								4. Update calibration data in the app
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_5.png" alt="New 4" />
+							<p class="gallery-caption">
+								5. Contact user support if there are problems
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_6.png" alt="New 4" />
+							<p class="gallery-caption">6. Done!</p>
+						</div>
+					</div>
+
+					<div class="image-gallery calibration-flow" style="display: none">
+						<div class="gallery-item">
+							<img
+								src="orginal_images/calibration_1.png"
+								alt="Calibration step 1"
+							/>
+							<p class="gallery-caption">
+								1. Use maintenance plan to physical locate the sensors
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_2.png" alt="Calibrate step 2" />
+							<p class="gallery-caption">
+								2. Connect the app with the sensor using
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_3.png" alt="Calibrate step 3" />
+							<p class="gallery-caption">3. Hold the reference device</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_4.png" alt="Calibrate step 4" />
+							<p class="gallery-caption">
+								4. Update calibration data in the app
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_5.png" alt="Calibrate step 5" />
+							<p class="gallery-caption">
+								5. Contact user support if there are problems
+							</p>
+						</div>
+						<div class="gallery-item">
+							<img src="orginal_images/install_6.png" alt="Calibrate step 6" />
+							<p class="gallery-caption">6. Done!</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button id="skip-instructions-btn" class="btn">Skip Instructions</button>
+		</div>
+
+		<!-- Login Page -->
+		<div id="login-page" class="page">
+			<h1 class="upward">Login</h1>
+			<p>Enter username and password sent to your email</p>
+			<form id="login-form">
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" id="username" name="username" />
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" id="password" name="password" />
+				</div>
+				<button type="submit" id="login-btn" class="btn" disabled>
+					Log in
+				</button>
+			</form>
+		</div>
+		<!-- NFC Information Page -->
+		<div id="nfc-info-page" class="page">
+			<h1 class="upward">NFC</h1>
+			<p id="nfc-info1">
+				Phone can be connected to the sensor via NFC (Near Field Communication).
+			</p>
+			<div class="nfc-image pre-nfc">
+				<img src="images/pre-nfcc2.png" alt="NFC Connection" />
+			</div>
+			<p id="nfc-info2">
+				NFC is short range (several cm) and phone does NOT stay connected to the
+				sensor, so you have to reconnect if you get disconnected.
+			</p>
+			<button id="nfc-next-btn" class="btn">Next</button>
+		</div>
+		<!-- Scan NFC Page -->
+		<div id="scan-page" class="page">
+			<h1 class="upward">Ready to scan</h1>
+			<!--<div class="nfc-icon">-->
+			<!--    <div class="nfc-wave"></div>-->
+			<!--    <div class="nfc-wave"></div>-->
+			<!--    <div class="nfc-wave"></div>-->
+			<!--</div>-->
+			<p id="nfc-status">
+				Touch the sensor with the phone and move the phone until they connect
+			</p>
+
+			<div class="ready-to-scan">
+				<!--<img src="images/ready-to-scan3.png" alt="NFC">-->
+				<img
+					src="images/scan1_extended213.png"
+					alt="NFC Scan 1"
+					id="scan-image-1"
+					class="active-scan-image"
+				/>
+				<img
+					src="images/scan223.png"
+					alt="NFC Scan 2"
+					id="scan-image-2"
+					class="inactive-scan-image"
+				/>
+			</div>
+
+			<button id="start-scan-btn" class="btn">Start Scanning</button>
+			<button id="skip-nfc-btn" class="btn">Skip NFC Detection</button>
+		</div>
+
+		<!-- Connected Page -->
+		<div id="connected-page" class="page">
+			<h1 class="upward">Scan complete</h1>
+			<div class="scan-complete">
+				<img src="images/scan-complete2.png" alt="scan complete" />
+			</div>
+			<p id="scanComplete">Sensor HMD90 connected</p>
+			<p id="scanComplete2">NFC tag ID: <span id="device-id">--</span></p>
+			<button id="done-btn" class="btn">Next</button>
+		</div>
+
+		<!-- Configuration Page -->
+		<div id="configuration-page" class="page">
+			<h1>Configuration</h1>
+			<div class="config-container">
+				<div class="device-info">
+					<img src="images/hmw90.png" alt="Device Image" />
+					<div class="device-text">
+						<p id="device_name">HMW90</p>
+						<p id="device_name_2">HMD60929192298y298</p>
+						<p id="connected-to-sensor" style="display: none">
+							<span class="status-dot"></span>Connected to sensor
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="device-name">Sensor name</label>
+				<input
+					type="text"
+					id="device-name"
+					name="device-name"
+					placeholder="Edit the name (optional)"
+				/>
+			</div>
+			<div class="form-group">
+				<label for="device-location">Location</label>
+				<input
+					type="text"
+					id="device-location"
+					name="device-location"
+					placeholder="Edit location (optional)"
+				/>
+			</div>
+			<div class="button-row">
+				<button id="back-btn" class="btn btn-secondary">Back</button>
+				<button id="next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+		<!-- Calibration Page -->
+		<div id="calibration-page" class="page">
+			<h1>Sensor dashboard</h1>
+			<!--<p>Values for the last 48 hours</p>-->
+
+			<div class="calibration-container">
+				<div class="value-group">
+					<label for="current-value">Current value</label>
+					<div class="value-display">0.03 C</div>
+				</div>
+
+				<div class="value-group">
+					<label for="select-values">Select values</label>
+					<select id="select-values" class="value-select">
+						<option value="temperature">Temperature</option>
+						<option value="humidity">Humidity</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="chart-container">
+				<img src="images/chart3.png" alt="Chart" class="chart-image" />
+			</div>
+			<div class="log-container">
+				<!--<p id="history-log">History logs <span class="see-more-history">See more</span><i class="ph-bold ph-caret-down"></i></p>-->
+				<p id="history-log">
+					History logs <i class="ph-bold ph-caret-down toggle-history"></i>
+				</p>
+				<div id="history-log-2" class="hidden">
+					<div class="log-event">
+						<strong>20.02.2024 11:22</strong><br />
+						sensor HMD60 installed in building A hall 2 by Matti, Company X
+					</div>
+					<div class="log-event">
+						<strong>20.02.2025 12:11</strong><br />
+						NFC connection established with Huawei 12
+					</div>
+					<div class="log-event">
+						<strong>20.02.2025 12:22</strong><br />
+						NFC connection timeout
+					</div>
+					<div class="log-event">
+						<strong>20.02.2025 12:25</strong><br />
+						Planned maintenance. Temperature values were adjusted by 0.07 C by
+						Matti, Company X
+					</div>
+				</div>
+			</div>
+			<div class="button-row">
+				<button id="calibration-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="calibration-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+		<!-- Calibration Options Page -->
+		<div id="calibration-options-page" class="page">
+			<h1>Calibration</h1>
+			<p>Sensor package should contain information if it is pre-calibrated</p>
+
+			<div class="radio-options-container">
+				<div class="radio-option">
+					<input
+						type="radio"
+						id="calibrate-option"
+						name="calibration-option"
+						value="calibrate"
+					/>
+					<label for="calibrate-option">Calibrate</label>
+				</div>
+
+				<div class="radio-option">
+					<input
+						type="radio"
+						id="pre-calibrated-option"
+						name="calibration-option"
+						value="pre-calibrated"
+					/>
+					<label for="pre-calibrated-option"
+						>The sensor is already calibrated</label
+					>
+				</div>
+			</div>
+
+			<div class="button-row">
+				<button id="calib-options-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="calib-options-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Calibration Input Page -->
+		<div id="calibration-input-page" class="page">
+			<h1>Calibration</h1>
+
+			<div class="info-container">
+				<p id="calibration-info">
+					Hold the reference device next to the sensor and wait for the values
+					to stabilize. <span class="see-more">See more</span>
+				</p>
+				<p id="additional-info" class="hidden">
+					Make sure reference device and sensor are in the same conditions,
+					without direct sunlight and at a distance from heat sources.
+				</p>
+			</div>
+
+			<!--<p class="sensor-status"><span class="status-dot-red"></span>Not connected to sensor. Bring phone close to the
+            sensor to reconnect</p>-->
+
+			<h2>Reference values</h2>
+
+			<div class="reference-input-container">
+				<div class="reference-input-row">
+					<p id="format22.22">Data format example: 23.45 or -10.25</p>
+					<label for="temperature-input">Temperature</label>
+
+					<div class="input-unit-group">
+						<input
+							type="text"
+							id="temperature-input"
+							placeholder="-"
+							inputmode="decimal"
+						/>
+						<select id="temperature-unit">
+							<option value="celsius">Celsius</option>
+							<option value="fahrenheit">Fahrenheit</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="reference-input-row">
+					<label for="humidity-input">Humidity</label>
+					<div class="input-unit-group">
+						<input
+							type="text"
+							id="humidity-input"
+							placeholder="-"
+							inputmode="decimal"
+						/>
+						<select id="humidity-unit">
+							<option value="percent">%</option>
+							<option value="ppm">ppm</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="button-row">
+				<button id="calibration-input-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="calibration-input-next-btn" class="btn btn-next" disabled>
+					Calibrate
+				</button>
+			</div>
+		</div>
+		<!-- Calibrated Page -->
+		<div id="calibrated-page" class="page">
+			<div class="centered-content">
+				<h1 class="success" class="flow-text setup-flow">
+					The new sensor has been calibrated
+				</h1>
+				<h1
+					class="success"
+					class="flow-text calibration-flow"
+					style="display: none"
+				>
+					Sensor calibration is complete
+				</h1>
+				<div class="success-icon">
+					<i class="ph-bold ph-check-circle"></i>
+				</div>
+			</div>
+			<div class="button-row">
+				<button id="calibrated-back-btn" class="btn btn-secondary">Back</button>
+				<button id="calibrated-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+		<!-- Maintenance Plan Options Page -->
+		<div id="maintenance-plan-page" class="page">
+			<h1>Maintenance plan</h1>
+
+			<div class="radio-options-container">
+				<div class="radio-option">
+					<input
+						type="radio"
+						id="setup-maintenance-option"
+						name="maintenance-option"
+						value="setup-maintenance"
+					/>
+					<label for="setup-maintenance-option">Set up maintenance plan</label>
+				</div>
+
+				<div class="radio-option">
+					<input
+						type="radio"
+						id="skip-maintenance-option"
+						name="maintenance-option"
+						value="skip-maintenance"
+					/>
+					<label for="skip-maintenance-option">Skip maintenance plan</label>
+				</div>
+			</div>
+
+			<div class="button-row">
+				<button id="maintenance-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="maintenance-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Maintenance Interval Page  -->
+		<div id="maintenance-interval-page" class="page">
+			<h1>Maintenance plan</h1>
+
+			<p id="maintenance-1">Set up calibration interval</p>
+			<p id="maintenance-2">Get the calibration interval from documentation</p>
+
+			<div class="form-group">
+				<select id="calibration-interval" class="value-select">
+					<option value="" disabled selected>Choose interval</option>
+					<option value="6">Every 6 months</option>
+					<option value="12">Every 12 months</option>
+					<option value="other">Other interval</option>
+				</select>
+			</div>
+
+			<div id="custom-interval-container" class="form-group hidden">
+				<label for="custom-interval">Enter interval (months)</label>
+				<input type="number" id="custom-interval" min="1" max="60" value="3" />
+			</div>
+
+			<!-- New due date container -->
+			<div id="due-date-container" class="due-date-container">
+				<p>Next calibration due date:</p>
+				<p id="calibration-due-date" class="date">17 September 2025</p>
+			</div>
+
+			<div class="button-row">
+				<button id="interval-back-btn" class="btn btn-secondary">Back</button>
+				<button id="interval-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Maintenance Complete Page -->
+		<div id="maintenance-complete-page" class="page">
+			<div class="centered-content">
+				<h1 class="success" class="flow-text setup-flow">
+					The sensor has been set up
+				</h1>
+				<h1
+					class="success"
+					class="flow-text calibration-flow"
+					style="display: none"
+				>
+					Calibration and maintenance plan complete
+				</h1>
+				<div class="success-icon">
+					<i class="ph-bold ph-check-circle"></i>
+				</div>
+			</div>
+			<div class="button-row">
+				<button id="complete-back-btn" class="btn btn-secondary">Back</button>
+				<button id="finish-btn" class="btn btn-next">To main page</button>
+			</div>
+		</div>
+
+		<!-- Instructions Page -->
+		<div id="instructions-page" class="page">
+			<h1 class="upward">Instructions</h1>
+
+			<div class="search-container">
+				<input
+					type="text"
+					id="search-input"
+					value="210697"
+					placeholder="Search for instructions..."
+				/>
+				<div class="search-filters">
+					<div class="filter-group">
+						<label for="language-filter">Language:</label>
+						<select id="language-filter">
+							<option value="english">English</option>
+							<option value="spanish">Español</option>
+							<option value="french">Français</option>
+							<option value="german">Deutsch</option>
+						</select>
+					</div>
+					<div class="filter-group">
+						<label for="sort-filter">Sort by:</label>
+						<select id="sort-filter">
+							<option value="relevance">Relevance</option>
+							<option value="newest">Newest first</option>
+							<option value="oldest">Oldest first</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<p class="results-count">32 results</p>
+
+			<div class="search-results">
+				<div class="result-item">
+					<div class="result-title">210697 Installation Guide</div>
+					<div class="result-meta">
+						<span class="result-type">HMP3, HMP7...</span>
+						<span class="result-type">User guide.</span>
+					</div>
+				</div>
+
+				<div class="result-item">
+					<div class="result-title">Overview</div>
+					<div class="result-description">Duct installation kit</div>
+					<div class="result-meta">
+						<span class="result-type">HMP3, HMP7...</span>
+						<span class="result-type">User guide</span>
+					</div>
+				</div>
+
+				<div class="result-item">
+					<div class="result-title">
+						Probe Mounting Using the Duct Installation Kit
+					</div>
+					<div class="result-meta">
+						<span class="result-type">HMP3, HMP7...</span>
+						<span class="result-type">User guide</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Installation Guide Page -->
+		<div id="installation-guide-page" class="page">
+			<h1 class="upward">210697 Installation Guide</h1>
+
+			<p class="guide-section-title">Overview</p>
+
+			<p class="guide-content">
+				Duct Installation Kit (Vaisala item 210697) is designed to support the
+				probe head of a cabled probe so it can be installed to a chamber or
+				duct. The kit is compatible with Vaisala probes that have a M9×1 body
+				thread at the rear of the probe head. For example, the following
+				products are compatible: HMT333 and HMT337 humidity and temperature
+				transmitter HMP3 and HMP7 humidity and temperature probe
+			</p>
+
+			<div class="button-row">
+				<button id="installation-guide-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="installation-guide-next-btn" class="btn btn-next">
+					Next
+				</button>
+			</div>
+		</div>
+		<!-- Probe Mounting Page -->
+		<div id="probe-mounting-page" class="page">
+			<h1 class="upward">Probe Mounting Using the Duct Installation Kit</h1>
+
+			<p class="guide-content">
+				Thread the clamping bush, nut, and supporting bar onto the probe cable.
+			</p>
+
+			<div class="guide-image">
+				<img src="images/step0.png" alt="Installation Step" />
+			</div>
+
+			<p class="guide-section-image-name">
+				Duct Installation Kit 210697 Dimensions
+			</p>
+
+			<p class="guide-content">
+				HMT333 and HMT337 humidity and temperature transmitter HMP3 and HMP7
+				humidity and temperature probe
+			</p>
+
+			<div class="button-row">
+				<button id="probe-mounting-back-btn" class="btn btn-secondary">
+					Back
+				</button>
+				<button id="probe-mounting-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+		<!-- Step 1 Page -->
+		<div id="step1-page" class="page">
+			<h1 class="upward">Step 1</h1>
+
+			<p class="guide-content">
+				Thread the clamping bush, nut, and supporting bar onto the probe cable.
+			</p>
+
+			<div class="guide-image">
+				<img src="images/step1.png" alt="Step 1 Installation" />
+			</div>
+
+			<ol class="guide-list">
+				<li>M9×1 thread on probe head</li>
+				<li>Supporting bar</li>
+				<li>Clamping bush</li>
+				<li>Nut</li>
+			</ol>
+
+			<div class="button-row">
+				<button id="step1-back-btn" class="btn btn-secondary">Back</button>
+				<button id="step1-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Step 2 Page -->
+		<div id="step2-page" class="page">
+			<h1 class="upward">Step 2</h1>
+
+			<p class="guide-content">
+				Thread the hanger to the probe and then thread the supporting bar to the
+				hanger. Fasten the bushing around the cable and the supporting bar.
+			</p>
+
+			<div class="guide-image">
+				<img src="images/step2.png" alt="Step 2 Installation" />
+			</div>
+
+			<ol class="guide-list">
+				<li>Hanger</li>
+				<li>Bushing</li>
+			</ol>
+
+			<div class="button-row">
+				<button id="step2-back-btn" class="btn btn-secondary">Back</button>
+				<button id="step2-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Step 3 Page -->
+		<div id="step3-page" class="page">
+			<h1 class="upward">Step 3</h1>
+
+			<p class="guide-content">
+				Pass the probe through the flange, and thread the nut to the flange.
+			</p>
+
+			<div class="guide-image">
+				<img src="images/step3.png" alt="Step 3 Installation" />
+			</div>
+
+			<ol class="guide-list">
+				<li>Flange</li>
+				<li>Clamping bush</li>
+				<li>Bushing</li>
+				<li>Nut</li>
+			</ol>
+
+			<div class="button-row">
+				<button id="step3-back-btn" class="btn btn-secondary">Back</button>
+				<button id="step3-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Step 4 Page -->
+		<div id="step4-page" class="page">
+			<h1 class="upward">Step 4</h1>
+
+			<p class="guide-content">Fasten the seal to the flange.</p>
+
+			<div class="guide-image">
+				<img src="images/step4.png" alt="Step 4 Installation" />
+			</div>
+
+			<ol class="guide-list">
+				<li>Seal</li>
+				<li>Flange</li>
+				<li>Plastic washer, 4 pcs</li>
+				<li>Washer, 4 pcs</li>
+				<li>Screw, 4 pcs</li>
+			</ol>
+
+			<div class="button-row">
+				<button id="step4-back-btn" class="btn btn-secondary">Back</button>
+				<button id="step4-next-btn" class="btn btn-next">Next</button>
+			</div>
+		</div>
+
+		<!-- Step 5-6 Page (Final) -->
+		<div id="step5-6-page" class="page">
+			<h1 class="upward">Step 5</h1>
+
+			<p class="guide-content">
+				Make a Ø 20 mm hole in the surface of the chamber or duct.
+			</p>
+
+			<h1>Step 6</h1>
+
+			<p class="guide-content">
+				Insert the probe through the hole and fasten the flange using screws and
+				washers.
+			</p>
+
+			<div class="button-row">
+				<button id="step5-6-back-btn" class="btn btn-secondary">Back</button>
+				<button id="step5-6-done-btn" class="btn btn-next">Done</button>
+			</div>
+		</div>
+		<!-- Assistance Page -->
+		<div id="assistance-page" class="page">
+			<h1 class="upward">Assistance</h1>
+
+			<div class="assistance-container">
+				<button class="assistance-btn">
+					<i class="ph-light ph-chats"></i>
+					Talk with a chatbot
+				</button>
+
+				<button class="assistance-btn">
+					<i class="ph-light ph-headset"></i>
+					Call customer service
+				</button>
+
+				<button class="assistance-btn">
+					<i class="ph-light ph-question-mark"></i>
+					Frequently asked questions
+				</button>
+			</div>
+		</div>
+
+		<!-- Settings Page -->
+		<div id="settings-page" class="page">
+			<h1 class="upward">Settings</h1>
+
+			<div class="settings-container">
+				<div class="settings-item">
+					<div class="settings-label">Metric units</div>
+					<label class="toggle-switch">
+						<input type="checkbox" id="metric-units-toggle" checked />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+
+				<div class="settings-item">
+					<div class="settings-label">Revert to factory settings</div>
+					<button class="reset-btn">Reset</button>
+				</div>
+
+				<div class="settings-item">
+					<div class="settings-label">Choose language</div>
+					<select id="language-select" class="value-select">
+						<option value="" disabled selected>Choose language</option>
+						<option value="en">English</option>
+						<option value="fi">Suomi</option>
+						<option value="fr">Français</option>
+						<option value="de">Deutsch</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<!-- Simple Chatbot Page -->
+		<div id="chatbot-page" class="page">
+			<h1 class="upward">Chatbot</h1>
+
+			<div class="chat-container">
+				<!-- Bot message -->
+				<div class="chat-message bot-message">
+					<div class="message-bubble">
+						Hi. I am a chatbot. How can I help you?
+					</div>
+				</div>
+
+				<!-- User message -->
+				<div class="chat-message user-message">
+					<div class="message-bubble">HMW90, can't connect</div>
+				</div>
+
+				<!-- Bot response -->
+				<div class="chat-message bot-message">
+					<div class="message-bubble">
+						Can you please explain the problem in more detail? Do you see any
+						error messages?
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+		<!-- Bottom Toolbar -->
+		<div class="bottom-toolbar">
+			<div class="toolbar-item">
+				<i class="ph-light ph-house"></i>
+				<span>Home</span>
+			</div>
+			<div class="toolbar-item">
+				<i class="ph-light ph-article"></i>
+				<span>Instructions</span>
+			</div>
+			<div class="toolbar-item">
+				<i class="ph-light ph-chat-teardrop"></i>
+				<span>Assistance</span>
+			</div>
+			<div class="toolbar-item">
+				<i class="ph-light ph-gear"></i>
+				<span>Settings</span>
+			</div>
+		</div>
+	</body>
 </html>
