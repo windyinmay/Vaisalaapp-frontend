@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "port": "/dev/tty.usbmodem1401",
-    "sketch": "sketch_read_DHT22sensor/sketch_read_DHT22sensor.ino"
+    "port": "/dev/tty.usbmodem12101",
+    "sketch": "hardware-arduino/sketch_read_transfer_DHT22sensor/sketch_read_transfer_DHT22sensor.ino"
 }
